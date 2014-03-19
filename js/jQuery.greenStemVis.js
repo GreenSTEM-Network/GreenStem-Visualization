@@ -3,11 +3,38 @@
 
 	var pluginName = "greenStemVis",
 		defaults = {
-			gravityX: 10,
-			gravityY: 10,
+			gravityX: 5,
+			gravityY: 15,
 			width: 1024,
 			height: 500,
-			scale: 20
+			scale: 20,
+			host: 'https://solarsunflower.herokuapp.com',
+			treeImg: 'resources/tree-6branches.svg',
+			treeWidth: 250,
+			treeHeight: 250,
+			leafWidth: 20,
+			leafHeight: 20,
+			leaves: [{
+				x: 3.5,
+				y: 7,
+				a: 1.2
+			},{
+				x: 2.5,
+				y: 7.4,
+				a: 3.1
+			},{
+				x: 5.5,
+				y: 7.4,
+				a: 2.1
+			},{
+				x: 7.5,
+				y: 7.4,
+				a: 2.8
+			},{
+				x: 9.5,
+				y: 7.2,
+				a: 1.3
+			}]
 		};
 
 	// The actual plugin constructor
@@ -30,15 +57,71 @@
 					.appendTo($element),
 				canvas = $canvas[0];
 
+			Date.prototype.format = function(format) //author: meizz
+				{
+				  var o = {
+				    "M+" : this.getMonth()+1, //month
+				    "d+" : this.getDate(),    //day
+				    "h+" : this.getHours(),   //hour
+				    "m+" : this.getMinutes(), //minute
+				    "s+" : this.getSeconds(), //second
+				    "q+" : Math.floor((this.getMonth()+3)/3),  //quarter
+				    "S" : this.getMilliseconds() //millisecond
+				  }
+
+				  if(/(y+)/.test(format)) format=format.replace(RegExp.$1,
+				    (this.getFullYear()+"").substr(4 - RegExp.$1.length));
+				  for(var k in o)if(new RegExp("("+ k +")").test(format))
+				    format = format.replace(RegExp.$1,
+				      RegExp.$1.length==1 ? o[k] :
+				        ("00"+ o[k]).substr((""+ o[k]).length));
+				  return format;
+				};
+
+			// $.getJSON( settings.host + "/public/summary.json", function( data ) {
+   //              $.each(data.readings, function( index, value ) {
+			// 		var dateStr = new Date(value.collection_time).format("yyyy-MM-dd h:mm:ss"),
+			// 			siteName = value.site_name,
+			// 			statusNames = value.status_names,
+			// 			$siteContainer = $('<div>' + siteName + '</div>'),
+			// 			$readingsContainer = $('<table></table>'),
+			// 			imgSrc, $readingsRow;
+
+			// 		$readingsRow = $readingsContainer.append('<tr></tr>');
+
+			// 		$.each(statusNames, function( index, value ) {
+			// 			if(value == 'GREEN') {
+			// 				imgSrc = 'resources/leaf-green.svg';
+			// 			}
+			// 			else if(value == 'YELLOW') {
+			// 				imgSrc = 'resources/leaf-yellow.svg';
+			// 			}
+			// 			else if(value == 'RED') {
+			// 				imgSrc = 'resources/leaf-red.svg';
+			// 			}
+			// 			else {
+			// 				imgSrc = 'resources/leaf-brown.svg';
+			// 			}
+			// 			// $siteContainer.append('<img src="' + imgSrc + '" width="50"></img>');
+			// 			$readingsRow.append('<td><img src="' + imgSrc + '" width="50"></img></td>');
+			// 		});
+
+			// 		$readingsContainer.append($readingsRow);
+			// 		$siteContainer.append($readingsContainer);
+			// 		$textContainer.append($siteContainer);
+			// 	});	
+   //          });
+			
 			var b2Vec2 = Box2D.Common.Math.b2Vec2,
 				b2BodyDef = Box2D.Dynamics.b2BodyDef,
 				b2Body = Box2D.Dynamics.b2Body,
 				b2FixtureDef = Box2D.Dynamics.b2FixtureDef,
 				b2Fixture = Box2D.Dynamics.b2Fixture,
+				b2JointDef = Box2D.Dynamics.Joints.b2RevoluteJointDef,
 				b2World = Box2D.Dynamics.b2World,
-				b2MassData = Box2D.Collision.Shapes.b2MassData,
+				// b2MassData = Box2D.Collision.Shapes.b2MassData,
 				b2PolygonShape = Box2D.Collision.Shapes.b2PolygonShape,
-				b2CircleShape = Box2D.Collision.Shapes.b2CircleShape,
+				// b2CircleShape = Box2D.Collision.Shapes.b2CircleShape,
 				b2DebugDraw = Box2D.Dynamics.b2DebugDraw;
 
 
@@ -142,63 +225,64 @@
 			};
 
 			var bodyDef = new b2BodyDef(),
-				fixDef = new b2FixtureDef();
+				fixDef = new b2FixtureDef(),
+				jointDef = new b2JointDef();
 
-			var FlexJoint = function(joint, multiplier) {
-				joint_angle = joint.GetJointAngle() * (180 / 3.14);
-				if (Math.abs(joint_angle) > 0.2) {
-					joint.SetMaxMotorTorque(multiplier * Math.abs(joint_angle / 30));
-					joint.SetMotorSpeed(-joint_angle / 30);
-				}
-			}
+			// var FlexJoint = function(joint, multiplier) {
+			// 	joint_angle = joint.GetJointAngle() * (180 / 3.14);
+			// 	if (Math.abs(joint_angle) > 0.2) {
+			// 		joint.SetMaxMotorTorque(multiplier * Math.abs(joint_angle / 30));
+			// 		joint.SetMotorSpeed(-joint_angle / 30);
+			// 	}
+			// }
 
-			var TreeJoint = function(bodyA, bodyB) {
-				var DEGTORAD = 3.14 / 180,
-					jointDef = new Box2D.Dynamics.Joints.b2RevoluteJointDef();
+			// var TreeJoint = function(bodyA, bodyB) {
+			// 	var DEGTORAD = 3.14 / 180,
+			// 		jointDef = new Box2D.Dynamics.Joints.b2RevoluteJointDef();
 
-				jointDef.bodyA = bodyA;
-				jointDef.bodyB = bodyB;
-				jointDef.localAnchorA.Set(0, -1);
-				if (bodyA == ground) {
-					jointDef.localAnchorA.Set(0, -2);
-				}
-				jointDef.localAnchorB.Set(0, 1);
-				jointDef.enableLimit = true;
-				jointDef.lowerAngle = -30 * DEGTORAD;
-				jointDef.upperAngle = 30 * DEGTORAD;
-				jointDef.enableMotor = true;
-				return physics.world.CreateJoint(jointDef);
-			}
+			// 	jointDef.bodyA = bodyA;
+			// 	jointDef.bodyB = bodyB;
+			// 	jointDef.localAnchorA.Set(0, -1);
+			// 	if (bodyA == ground) {
+			// 		jointDef.localAnchorA.Set(0, -2);
+			// 	}
+			// 	jointDef.localAnchorB.Set(0, 1);
+			// 	jointDef.enableLimit = true;
+			// 	jointDef.lowerAngle = -30 * DEGTORAD;
+			// 	jointDef.upperAngle = 30 * DEGTORAD;
+			// 	jointDef.enableMotor = true;
+			// 	return physics.world.CreateJoint(jointDef);
+			// }
 
-			var FixedRectangle = function(x, y, width, height) {
-				var rect;
+			// var FixedRectangle = function(x, y, width, height) {
+			// 	var rect;
 
-				bodyDef.type = b2Body.b2_staticBody;
-				fixDef.shape = new b2PolygonShape();
-				fixDef.shape.SetAsBox(width, height);
-				bodyDef.position.Set(x, y);
-				rect = physics.world.CreateBody(bodyDef);
-				rect.CreateFixture(fixDef);
+			// 	bodyDef.type = b2Body.b2_staticBody;
+			// 	fixDef.shape = new b2PolygonShape();
+			// 	fixDef.shape.SetAsBox(width, height);
+			// 	bodyDef.position.Set(x, y);
+			// 	rect = physics.world.CreateBody(bodyDef);
+			// 	rect.CreateFixture(fixDef);
 				
-				return rect;
-			}
+			// 	return rect;
+			// }
 
-			var TreeTrunk = function(x, y) {
-				bodyDef.type = b2Body.b2_dynamicBody;
-				fixDef.shape = new b2PolygonShape();
-				fixDef.shape.SetAsBox(0.25, 1);
-				bodyDef.position.Set(x, y);
-				trunk = physics.world.CreateBody(bodyDef);
-				trunk.CreateFixture(fixDef);
-				return trunk;
-			}
+			// var TreeTrunk = function(x, y) {
+			// 	bodyDef.type = b2Body.b2_dynamicBody;
+			// 	fixDef.shape = new b2PolygonShape();
+			// 	fixDef.shape.SetAsBox(0.25, 1);
+			// 	bodyDef.position.Set(x, y);
+			// 	trunk = physics.world.CreateBody(bodyDef);
+			// 	trunk.CreateFixture(fixDef);
+			// 	return trunk;
+			// }
 
-			Body.prototype.defaults = {
-				shape: "block",
-				width: 2,
-				height: 2,
-				radius: 1
-			};
+			// Body.prototype.defaults = {
+			// 	shape: "block",
+			// 	width: 2,
+			// 	height: 2,
+			// 	radius: 1
+			// };
 
 			Body.prototype.defaults = {
 				shape: "line",
@@ -228,253 +312,121 @@
 				lastFrame = new Date().getTime();
 
 			physics = window.physics = new Physics(canvas);
+			
 			// physics.debug();
 
-			// Create some walls
-			// new Body(physics, {
-			// 	type: "static",
-			// 	x: 0,
-			// 	y: 0,
-			// 	height: 25,
-			// 	width: 0.5
-			// });
-			// new Body(physics, {
-			// 	type: "static",
-			// 	x: 51,
-			// 	y: 0,
-			// 	height: 25,
-			// 	width: 0.5
-			// });
-			// new Body(physics, {
-			// 	type: "static",
-			// 	x: 0,
-			// 	y: 0,
-			// 	height: 0.5,
-			// 	width: 60
-			// });
-			// var ground = new Body(physics, {
-			// 	type: "static",
-			// 	x: 0,
-			// 	y: 25,
-			// 	height: 0.5,
-			// 	width: 60
-			// });
-
-			var testBody = new Body(physics, {
-				x: 12.5,
-				y: 14,
-				width: 0.25,
-				height: 1,
-				angle: 2.6
-			});
 			var tree = new Body(physics, {
 				type: 'static',
-				x: 10,
-				y: 12,
+				x: settings.treeWidth / 2 / settings.scale,
+				y: 1,
 				width: .1,
-				height: 12
+				height: 1
 			});
-			// new Body(physics, {
-			// 	x: 13,
-			// 	y: 8,
-			// 	width: 0.25,
-			// 	height: 1
-			// });
-			// new Body(physics, {
-			// 	x: 8,
-			// 	y: 3,
-			// 	width: 0.25,
-			// 	height: 1
-			// });
+			
+			var leaves = settings.leaves, 
+				jointDef,
+				DEGTORAD;
 
-			// var tree = FixedRectangle(10, 12, 1, 12);
+			for(var i = 0; i < leaves.length; i++) {
+				leaves[i].b = new Body(physics, {
+					x: leaves[i].x,
+					y: leaves[i].y,
+					width: 0.25,
+					height: 1,
+					angle: leaves[i].a
+				});
 
-			var jointDef = new Box2D.Dynamics.Joints.b2RevoluteJointDef();
+				jointDef = new Box2D.Dynamics.Joints.b2RevoluteJointDef();
+				jointDef.Initialize(tree.body, leaves[i].b.body, 
+					new b2Vec2(leaves[i].x + 0.5, leaves[i].y - 0.5));
+				jointDef.enableLimit = true;
+				jointDef.enableMotor = true;
+				DEGTORAD = 3.14 / 180;
+				// DEGTORAD = leaves[i].a / 180;
+				jointDef.lowerAngle = -50 * DEGTORAD;
+				jointDef.upperAngle = 50 * DEGTORAD;
 
-			jointDef.Initialize(tree.body, testBody.body,
-				new b2Vec2(11.5, 12.5));
+				leaves[i].joint = physics.world.CreateJoint(jointDef);
 
-			var DEGTORAD = 3.14 / 180;
-			jointDef.enableLimit = true;
-			jointDef.lowerAngle = -30 * DEGTORAD;
-			jointDef.upperAngle = 30 * DEGTORAD;
-			jointDef.enableMotor = true;
+				leaves[i].img = new Image;
+				leaves[i].img.src = "resources/leaf-green.svg";
 
-			var joint = physics.world.CreateJoint(jointDef);
+				// leaves[i].x = leaves[i].x * settings.scale;
+				// leaves[i].y = leaves[i].y * settings.scale;
+			}
 
-			// bodyDef.type = b2Body.b2_staticBody;
-			// fixDef.shape = new b2PolygonShape();
-			// fixDef.shape.SetAsBox(20, 2);
-			// bodyDef.position.Set(10, 400 / 30 + 1.8);
-			// ground = physics.world.CreateBody(bodyDef);
-			// ground.CreateFixture(fixDef);
-
-			// var stump = TreeTrunk(10, 12);
-			// var trunk1 = TreeTrunk(10, 10);
-			// var trunk2 = TreeTrunk(10, 8);
-			// var trunk3 = TreeTrunk(10, 6);
-			// var trunk4 = TreeTrunk(10, 4);
-
-			// var tree_joint_1 = TreeJoint(ground, stump);
-			// var tree_joint_2 = TreeJoint(stump, trunk1);
-			// var tree_joint_3 = TreeJoint(trunk1, trunk2);
-			// var tree_joint_4 = TreeJoint(trunk2, trunk3);
-			// var tree_joint_5 = TreeJoint(trunk3, trunk4);
+			var treeImg = new Image;
+			treeImg.src = settings.treeImg;
 
 			window.gameLoop = function() {
+
 				var ctx = physics.context;
 				var tm = new Date().getTime();
-
-				requestAnimationFrame(gameLoop);
 				var dt = (tm - lastFrame) / 1000;
-				if (dt > 1 / 15) {
-					dt = 1 / 15;
+				var body, angle, canvasRotationCenterX, canvasRotationCenterY, img;
+			    
+			    if(dt > 1/15) { 
+			    	dt = 1/15; 
+			    }
+			    
+			    physics.step(dt);
+			    lastFrame = tm;
+
+			    ctx.save();
+				ctx.clearRect(0, 0, canvas.width, canvas.height);
+				ctx.drawImage(treeImg, 0, 0, 250, 250 * treeImg.height / treeImg.width); 
+				ctx.setTransform(1, 0, 0, 1, 0, 0);
+				ctx.restore();
+
+				for(var i = 0; i < leaves.length; i++) {
+					var joint_angle = leaves[i].joint.GetJointAngle() * (180 / 3.14);
+					if( Math.abs(joint_angle) > 0.2 ) {
+						var rando = Math.floor(Math.random() * (10 - 2 + 1)) + 2;
+				        leaves[i].joint.SetMaxMotorTorque( rando * Math.abs( joint_angle / 30 ) );
+				        leaves[i].joint.SetMotorSpeed( -joint_angle / 30 );
+				    }
+					img = leaves[i].img;
+
+					body = leaves[i].b.body;
+					angle = body.GetAngle();
+
+					// x = body.GetPosition().x * settings.scale;
+					// y = body.GetPosition().y * settings.scale;
+					x = leaves[i].x * settings.scale;
+					y = leaves[i].y * settings.scale;
+
+					canvasRotationCenterX = 0 + x;
+					canvasRotationCenterY = 0 + y + (img.height * 2.2);
+
+					ctx.save();
+					ctx.translate( canvasRotationCenterX, canvasRotationCenterY);
+					ctx.rotate( angle );
+					ctx.translate( -canvasRotationCenterX, -canvasRotationCenterY );
+					ctx.drawImage(img, x, y, settings.leafWidth, settings.leafHeight * img.height / img.width); 
+					ctx.restore();
+
+					//Show rotation point
+					// ctx.fillRect(canvasRotationCenterX, canvasRotationCenterY, 5, 5);
 				}
 
-				physics.step(dt);
-				lastFrame = tm;
-
+				/*
 				var body = testBody.body;
-				var angle = body.GetAngle();
-				var x = body.GetPosition().x;
-				var y = body.GetPosition().x;
+				// var angle = body.GetAngle() + parseFloat($('#angle').val());
+				var angle = parseFloat($('#angle').val());
+				// var x = body.GetPosition().x;
+				var x = parseFloat($('#x').val());
+				// var y = body.GetPosition().y;
+				var y = parseFloat($('#y').val());
 
-				var canvasRotationCenterX = settings.width / 2;
-				var canvasRotationCenterY = settings.height / 2;
-
-				var img = new Image;				
-				img.onload = function(){ 
-					var objectRotationCenterX = img.width / 2;
-					var objectRotationCenterY = img.height / 2;
-
-					ctx.save();
-					ctx.clearRect(0, 0, canvas.width, canvas.height);
-					ctx.setTransform(1, 0, 0, 1, 0, 0);
-					ctx.restore();
-
-					ctx.save();
-					ctx.translate( canvasRotationCenterX, canvasRotationCenterY );
-					ctx.rotate( angle );
-					ctx.translate( -objectRotationCenterX, -objectRotationCenterY );
-					ctx.drawImage(img, x, y, 20, 20 * img.height / img.width); 
-					ctx.restore();
-				};
-				img.src = "resources/leaf-green.svg";
-				// img.width = 250;
-				// img.height = 250;
-				debugger
-				
-				// debugger
-
-				// FlexJoint(joint, 200);
-				// FlexJoint(tree_joint_2, 800);
-				// FlexJoint(tree_joint_3, 600);
-				// FlexJoint(tree_joint_4, 400);
-				// FlexJoint(tree_joint_5, 200);
+				var canvasRotationCenterX = 0 + x;
+				var canvasRotationCenterY = 0 + y + (img.height * 2.2);
+				*/
+				requestAnimationFrame(gameLoop);
 			};
 
 			requestAnimationFrame(gameLoop);
 		}
 	}
-	/*
-			me.gameElements = [];
-			me.gameElements.lines = [];
-			me.drawContext = {};
-			me.b2 = {};
-
-			me.b2 = {
-				vec2: Box2D.Common.Math.b2Vec2,
-				bodyDef: Box2D.Dynamics.b2BodyDef,
-				body: Box2D.Dynamics.b2Body,
-				fixtureDef: Box2D.Dynamics.b2FixtureDef,
-				fixture: Box2D.Dynamics.b2Fixture,
-				world: Box2D.Dynamics.b2World,
-				massData: Box2D.Collision.Shapes.b2MassData,
-				polygonShape: Box2D.Collision.Shapes.b2PolygonShape,
-				circleShape: Box2D.Collision.Shapes.b2CircleShape,
-				debugDraw: Box2D.Dynamics.b2DebugDraw
-			};
-
-			me.b2.world = new me.b2.world(
-				new me.b2.vec2(settings.gravityX, settings.gravityY) //gravity
-				, true //allow sleep
-			);
-
-			var fixDef = me.b2.fixDef = new me.b2.fixtureDef;
-			fixDef.density = 1.0;
-			fixDef.friction = 0.5;
-			fixDef.restitution = 0.2;
-
-			var bodyDef = me.b2.bodyDef = new me.b2.bodyDef;
-
-			//create ground
-			bodyDef.type = me.b2.body.b2_staticBody;
-			bodyDef.position.x = 1;
-			bodyDef.position.y = (settings.height / settings.scale) - 10;
-			console.log('bodyDef.position.y', (settings.height / settings.scale) - 10);
-			fixDef.shape = new me.b2.polygonShape;
-			fixDef.shape.SetAsBox(10, 1);
-			me.b2.world.CreateBody(bodyDef).CreateFixture(fixDef);
-
-			//create some objects
-			me.createSomeObjects();
-
-			//setup debug draw
-			var debugDraw = new me.b2.debugDraw();
-			// debugDraw.SetSprite(document.getElementById("canvas").getContext("2d"));
-			debugDraw.SetSprite(canvas.getContext("2d"));
-			debugDraw.SetDrawScale(settings.scale);
-			// debugDraw.SetFillAlpha(0.3);
-			// debugDraw.SetLineThickness(1.0);
-			debugDraw.SetFlags(me.b2.debugDraw.e_shapeBit | me.b2.debugDraw.e_jointBit);
-			me.b2.world.SetDebugDraw(debugDraw);
-
-			// window.setInterval(me.update, 1000 / 60);
-			window.setInterval(function() {
-				var lastElement = me.gameElements.lines.pop(),
-					lastElementPosition, newLength;
-				console.log('Step');
-
-				me.b2.world.Step(
-					1 / 60 //frame-rate
-					, 10 //velocity iterations
-					, 10 //position iterations
-				);
-				me.b2.world.DrawDebugData();
-				// me.b2.world.ClearForces();
-
-				// me.createSomeObjects();
-			}, 1000 / 60);
-
-
-		},
-		createSomeObjects: function() {
-			console.log('createSomeObjects');
-			var me = this;
-
-			var fixDef = me.b2.fixDef;
-
-			var bodyDef = me.b2.bodyDef;
-			bodyDef.type = me.b2.body.b2_dynamicBody;
-
-			for (var i = 0; i < 10; ++i) {
-				if (Math.random() > 0.5) {
-					fixDef.shape = new me.b2.polygonShape;
-					fixDef.shape.SetAsBox(
-						Math.random() + 0.1 //half width
-						, Math.random() + 0.1 //half height
-					);
-				} else {
-					fixDef.shape = new me.b2.circleShape(
-						Math.random() + 0.1 //radius
-					);
-				}
-				bodyDef.position.x = Math.random() * 10;
-				bodyDef.position.y = Math.random() * 10;
-				me.b2.world.CreateBody(bodyDef).CreateFixture(fixDef);
-			}
-			*/
-
 
 	// A really lightweight plugin wrapper around the constructor,
 	// preventing against multiple instantiations
