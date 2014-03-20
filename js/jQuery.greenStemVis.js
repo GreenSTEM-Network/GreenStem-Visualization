@@ -52,6 +52,202 @@
 				size: 25,
 				mirrorX: true,
 				siteId: 1
+			},{
+				x: 5.7,
+				y: 8.1,
+				a: 0.5, 
+				size: 16,
+				mirrorX: true,
+				siteId: 2
+			},{
+				x: 4.43,
+				y: 6.84,
+				a: 4.9, 
+				size: 16,
+				siteId: 2
+			},{
+				x: 5.25,
+				y: 9.15,
+				a: 4.2, 
+				size: 16,
+				siteId: 2
+			},{
+				x: 3.63,
+				y: 8.09,
+				a: 5, 
+				size: 16,
+				mirrorX: true,
+				siteId: 2
+			},{
+				x: 3.23,
+				y: 7.82,
+				a: 5.9, 
+				size: 16,
+				mirrorX: true,
+				siteId: 2
+			},{
+				x: 2.6,
+				y: 6.22,
+				a: 0, 
+				size: 25,
+				mirrorX: true,
+				siteId: 2
+			},{
+				x: 7.37,
+				y: 4.6,
+				a: 0.3, 
+				size: 16,
+				mirrorX: true,
+				siteId: 3
+			},{
+				x: 6.82,
+				y: 2.55,
+				a: 4.8, 
+				size: 16,
+				siteId: 3
+			},{
+				x: 7.25,
+				y: 1.66,
+				a: 5.1, 
+				size: 16,
+				siteId: 3
+			},{
+				x: 9.2,
+				y: 4,
+				a: 1.5, 
+				size: 16,
+				mirrorX: true,
+				siteId: 3
+			},{
+				x: 9.73,
+				y: 5.89,
+				a: 5.5, 
+				size: 16,
+				siteId: 3
+			},{
+				x: 8.64,
+				y: 2.55,
+				a: 1.2, 
+				size: 25,
+				mirrorX: true,
+				siteId: 3
+			},{
+				x: 12.11,
+				y: 6,
+				a: 1.2, 
+				size: 16,
+				mirrorX: true,
+				siteId: 4
+			},{
+				x: 13.15,
+				y: 5.1,
+				a: 5.4, 
+				size: 16,
+				siteId: 4
+			},{
+				x: 15,
+				y: 5.35,
+				a: 2, 
+				size: 16,
+				mirrorX: true,
+				siteId: 4
+			},{
+				x: 15.42,
+				y: 6.42,
+				a: 2, 
+				size: 16,
+				mirrorX: true,
+				siteId: 4
+			},{
+				x: 12.75,
+				y: 8.02,
+				a: 0.3, 
+				size: 16,
+				siteId: 4
+			},{
+				x: 14.93,
+				y: 3.54,
+				a: 6.1, 
+				size: 25,
+				siteId: 4
+			},{
+				x: 14.6,
+				y: 8.62,
+				a: 5.8, 
+				size: 16,
+				siteId: 5
+			},{
+				x: 15.35,
+				y: 8.11,
+				a: 1.3,
+				size: 16,
+				mirrorX: true,
+				siteId: 5
+			},{
+				x: 16.89,
+				y: 8.65,
+				a: 2.8, 
+				size: 16,
+				mirrorX: true,
+				siteId: 5
+			},{
+				x: 17.58,
+				y: 8.31,
+				a: 1.3, 
+				size: 16,
+				siteId: 5
+			},{
+				x: 17.82,
+				y: 7.83,
+				a: 0, 
+				size: 16,
+				siteId: 5
+			},{
+				x: 17.99,
+				y: 7,
+				a: 1.6, 
+				size: 25,
+				mirrorX: true,
+				siteId: 5
+			},{
+				x: 15.6,
+				y: 11.5,
+				a: 2, 
+				size: 16,
+				mirrorX: true,
+				siteId: 6
+			},{
+				x: 16.91,
+				y: 12.47,
+				a: 1.4, 
+				size: 16,
+				siteId: 6
+			},{
+				x: 16.36,
+				y: 12.76,
+				a: 3.1, 
+				size: 16,
+				mirrorX: true,
+				siteId: 6
+			},{
+				x: 14.9,
+				y: 12.72,
+				a: 1, 
+				size: 16,
+				siteId: 6
+			},{
+				x: 13.4,
+				y: 12.98,
+				a: 1.3, 
+				size: 16,
+				siteId: 6
+			},{
+				x: 18.2,
+				y: 12.5,
+				a: 2.6, 
+				size: 25,
+				mirrorX: true,
+				siteId: 6
 			}]
 		};
 
