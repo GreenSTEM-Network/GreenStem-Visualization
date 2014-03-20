@@ -3,36 +3,37 @@
 
 	var pluginName = "greenStemVis",
 		defaults = {
-			gravityX: 5,
-			gravityY: 5,
+			gravityX: 3.5,
+			gravityY: 3.5,
 			width: 1024,
 			height: 750,
 			scale: 20,
 			host: 'https://solarsunflower.herokuapp.com',
 			treeImg: 'resources/tree-6branches.svg',
-			treeWidth: 250,
-			treeHeight: 250,
+			treeWidth: 400,
+			treeHeight: 400,
 			leaves: [{
-				x: 3.5,
-				y: 7,
-				a: 2.5,
-				siteId: 1,
-				size: 5
+				x: 7.2,
+				y: 11.9,
+				a: 5,
+				size: 16,
+				siteId: 1
 			},{
-				x: 2.5,
-				y: 7.4,
-				a: 3.0,
-				size: 7
-			},{
+				x: 5.3,
+				y: 11.57,
+				a: 4.8,
+				size: 16,
+				siteId: 1
+			}/*,{
 				x: 5.5,
 				y: 7.4,
 				a: 2.1,
-				size: 10
+				size: 15
 			},{
 				x: 7.5,
 				y: 7.4,
 				a: 2.8,
-				size: 13
+				size: 15
 			},{
 				x: 9.5,
 				y: 7.2,
@@ -40,6 +41,10 @@
 				size: 20,
 				mirrorX: true
 			}]
+				a: 1.3,
+				size: 20
+			}
+*/]
 		};
 
 	// The actual plugin constructor
