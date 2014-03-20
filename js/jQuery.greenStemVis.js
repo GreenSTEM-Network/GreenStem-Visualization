@@ -59,7 +59,8 @@
 				$element = $(this.element),
 				$canvas = $('<canvas width="' + settings.width + '" height="' + settings.height + '"></canvas>')
 					.appendTo($element),
-				canvas = $canvas[0];
+				canvas = $canvas[0],
+				testLeaf = true;
 
 			Date.prototype.format = function(format) //author: meizz
 				{
@@ -331,36 +332,92 @@
 				jointDef,
 				DEGTORAD;
 
-			for(var i = 0; i < leaves.length; i++) {
-				leaves[i].b = new Body(physics, {
-					x: leaves[i].x,
-					y: leaves[i].y,
+			var initLeaf = function(leaf, isTest) {
+				leaf.b = new Body(physics, {
+					x: leaf.x,
+					y: leaf.y,
 					width: 0.25,
 					height: 1,
-					angle: leaves[i].a
+					angle: leaf.a
 				});
 
-				jointDef = new Box2D.Dynamics.Joints.b2RevoluteJointDef();
-				jointDef.Initialize(tree.body, leaves[i].b.body, 
-					new b2Vec2(leaves[i].x + 0.5, leaves[i].y - 0.5));
-				jointDef.enableLimit = true;
-				jointDef.enableMotor = true;
-				DEGTORAD = 3.14 / 180;
-				// DEGTORAD = leaves[i].a / 180;
-				jointDef.lowerAngle = -50 * DEGTORAD;
-				jointDef.upperAngle = 50 * DEGTORAD;
+				if(!isTest) {
+					jointDef = new Box2D.Dynamics.Joints.b2RevoluteJointDef();
+					jointDef.Initialize(tree.body, leaf.b.body, 
+						new b2Vec2(leaf.x + 0.5, leaf.y - 0.5));
+					jointDef.enableLimit = true;
+					jointDef.enableMotor = true;
+					DEGTORAD = 3.14 / 180;
+					// DEGTORAD = leaves[i].a / 180;
+					jointDef.lowerAngle = -50 * DEGTORAD;
+					jointDef.upperAngle = 50 * DEGTORAD;
 
-				leaves[i].joint = physics.world.CreateJoint(jointDef);
+					leaf.joint = physics.world.CreateJoint(jointDef);
+				}
 
-				leaves[i].img = new Image;
-				leaves[i].img.src = "resources/leaf-green.svg";
+				leaf.img = new Image;
+				leaf.img.src = "resources/leaf-green.svg";
+			}
+ 
+			for(var i = 0; i < leaves.length; i++) {
+				initLeaf(leaves[i]);
+			}
 
-				// leaves[i].x = leaves[i].x * settings.scale;
-				// leaves[i].y = leaves[i].y * settings.scale;
+			if(testLeaf) {
+				testLeaf = {
+					x: parseFloat($('#x').val()),
+					y: parseFloat($('#y').val()),
+					a: parseFloat($('#angle').val()),
+					size: parseFloat($('#size').val())
+				};
+
+				initLeaf(testLeaf, true);
 			}
 
 			var treeImg = new Image;
 			treeImg.src = settings.treeImg;
+
+			var animateLeaf = function(leaf, ctx) {
+				var angle, body, x, y, img, canvasRotationCenterX, canvasRotationCenterY;
+
+				if(leaf.joint) {
+					var joint_angle = leaf.joint.GetJointAngle() * (180 / 3.14);
+
+					if( Math.abs(joint_angle) > 0.2 ) {
+						var rando = Math.floor(Math.random() * (10 - 2 + 1)) + 2;
+				        leaf.joint.SetMaxMotorTorque( rando * Math.abs( joint_angle / 30 ) );
+				        leaf.joint.SetMotorSpeed( -joint_angle / 30 );
+				    }
+				    body = leaf.b.body;
+				    angle = body.GetAngle();
+				}
+				else {
+					angle = leaf.a;
+				}
+
+				img = leaf.img;
+
+				x = leaf.x * settings.scale;
+				y = leaf.y * settings.scale;
+
+				canvasRotationCenterX = 0 + x;
+				canvasRotationCenterY = 0 + y + (img.height * 2.2);
+
+				ctx.save();
+				ctx.translate( canvasRotationCenterX, canvasRotationCenterY);
+				ctx.rotate( angle );
+				ctx.translate( -canvasRotationCenterX, -canvasRotationCenterY );
+				ctx.drawImage(img, x, y, leaf.size, leaf.size * img.height / img.width); 
+				ctx.restore();
+
+				//Show rotation point
+				// ctx.fillRect(canvasRotationCenterX, canvasRotationCenterY, 5, 5);
+			}
+
+			$('#controls').find('input').change(function() {
+				console.log('leaf changed');
+				initLeaf(testLeaf, true);
+			});
 
 			window.gameLoop = function() {
 
@@ -383,34 +440,16 @@
 				ctx.restore();
 
 				for(var i = 0; i < leaves.length; i++) {
-					var joint_angle = leaves[i].joint.GetJointAngle() * (180 / 3.14);
-					if( Math.abs(joint_angle) > 0.2 ) {
-						var rando = Math.floor(Math.random() * (10 - 2 + 1)) + 2;
-				        leaves[i].joint.SetMaxMotorTorque( rando * Math.abs( joint_angle / 30 ) );
-				        leaves[i].joint.SetMotorSpeed( -joint_angle / 30 );
-				    }
-					img = leaves[i].img;
+					animateLeaf(leaves[i], ctx);
+				}
 
-					body = leaves[i].b.body;
-					angle = body.GetAngle();
+				if(testLeaf) {
+					testLeaf.x = parseFloat($('#x').val());
+					testLeaf.y = parseFloat($('#y').val());
+					testLeaf.a = parseFloat($('#angle').val());
+					testLeaf.size = parseFloat($('#size').val());
 
-					// x = body.GetPosition().x * settings.scale;
-					// y = body.GetPosition().y * settings.scale;
-					x = leaves[i].x * settings.scale;
-					y = leaves[i].y * settings.scale;
-
-					canvasRotationCenterX = 0 + x;
-					canvasRotationCenterY = 0 + y + (img.height * 2.2);
-
-					ctx.save();
-					ctx.translate( canvasRotationCenterX, canvasRotationCenterY);
-					ctx.rotate( angle );
-					ctx.translate( -canvasRotationCenterX, -canvasRotationCenterY );
-					ctx.drawImage(img, x, y, leaves[i].size, leaves[i].size * img.height / img.width); 
-					ctx.restore();
-
-					//Show rotation point
-					// ctx.fillRect(canvasRotationCenterX, canvasRotationCenterY, 5, 5);
+					animateLeaf(testLeaf, ctx);
 				}
 
 				/*
