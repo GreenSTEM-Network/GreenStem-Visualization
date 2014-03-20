@@ -4,36 +4,40 @@
 	var pluginName = "greenStemVis",
 		defaults = {
 			gravityX: 5,
-			gravityY: 15,
+			gravityY: 5,
 			width: 1024,
-			height: 500,
+			height: 750,
 			scale: 20,
 			host: 'https://solarsunflower.herokuapp.com',
 			treeImg: 'resources/tree-6branches.svg',
 			treeWidth: 250,
 			treeHeight: 250,
-			leafWidth: 20,
-			leafHeight: 20,
 			leaves: [{
 				x: 3.5,
 				y: 7,
-				a: 1.2
+				a: 2.5,
+				siteId: 1,
+				size: 5
 			},{
 				x: 2.5,
 				y: 7.4,
-				a: 3.1
+				a: 3.0,
+				size: 7
 			},{
 				x: 5.5,
 				y: 7.4,
-				a: 2.1
+				a: 2.1,
+				size: 10
 			},{
 				x: 7.5,
 				y: 7.4,
-				a: 2.8
+				a: 2.8,
+				size: 13
 			},{
 				x: 9.5,
 				y: 7.2,
-				a: 1.3
+				a: 1.3,
+				size: 20
 			}]
 		};
 
@@ -374,7 +378,7 @@
 
 			    ctx.save();
 				ctx.clearRect(0, 0, canvas.width, canvas.height);
-				ctx.drawImage(treeImg, 0, 0, 250, 250 * treeImg.height / treeImg.width); 
+				ctx.drawImage(treeImg, 0, 0, settings.treeWidth, settings.treeHeight * treeImg.height / treeImg.width); 
 				ctx.setTransform(1, 0, 0, 1, 0, 0);
 				ctx.restore();
 
@@ -402,7 +406,7 @@
 					ctx.translate( canvasRotationCenterX, canvasRotationCenterY);
 					ctx.rotate( angle );
 					ctx.translate( -canvasRotationCenterX, -canvasRotationCenterY );
-					ctx.drawImage(img, x, y, settings.leafWidth, settings.leafHeight * img.height / img.width); 
+					ctx.drawImage(img, x, y, leaves[i].size, leaves[i].size * img.height / img.width); 
 					ctx.restore();
 
 					//Show rotation point
