@@ -3,8 +3,8 @@
 
 	var pluginName = "greenStemVis",
 		defaults = {
-			gravityX: 3.5,
-			gravityY: 3.5,
+			gravityX: 3,
+			gravityY: 3,
 			width: 1024,
 			height: 750,
 			scale: 20,
@@ -13,38 +13,46 @@
 			treeWidth: 400,
 			treeHeight: 400,
 			leaves: [{
-				x: 7.2,
-				y: 11.9,
-				a: 5,
+				x: 7.1,
+				y: 12,
+				a: 0.5,
 				size: 16,
+				mirrorX: true,
 				siteId: 1
 			},{
 				x: 5.3,
-				y: 11.57,
-				a: 4.8,
+				y: 11.45,
+				a: 4.5,
 				size: 16,
 				siteId: 1
-			}/*,{
-				x: 5.5,
-				y: 7.4,
-				a: 2.1,
-				size: 15
 			},{
-				x: 7.5,
-				y: 7.4,
-				a: 2.8,
-				size: 15
+				x: 5.13,
+				y: 12.79,
+				a: 3.9,
+				size: 16,
+				siteId: 1
 			},{
-				x: 9.5,
-				y: 7.2,
-				a: 0,
-				size: 20,
-				mirrorX: true
+				x: 3.325,
+				y: 12.7,
+				a: 4.8, 
+				size: 16,
+				mirrorX: true,
+				siteId: 1
+			},{
+				x: 2.8,
+				y: 12.3,
+				a: 5.91,
+				size: 16,
+				mirrorX: true,
+				siteId: 1
+			},{
+				x: 1.4,
+				y: 11.5,
+				a: 5.8,
+				size: 25,
+				mirrorX: true,
+				siteId: 1
 			}]
-				a: 1.3,
-				size: 20
-			}
-*/]
 		};
 
 	// The actual plugin constructor
