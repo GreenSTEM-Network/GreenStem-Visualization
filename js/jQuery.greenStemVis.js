@@ -36,8 +36,9 @@
 			},{
 				x: 9.5,
 				y: 7.2,
-				a: 1.3,
-				size: 20
+				a: 0,
+				size: 20,
+				mirrorX: true
 			}]
 		};
 
@@ -368,7 +369,8 @@
 					x: parseFloat($('#x').val()),
 					y: parseFloat($('#y').val()),
 					a: parseFloat($('#angle').val()),
-					size: parseFloat($('#size').val())
+					size: parseFloat($('#size').val()),
+					mirrorX: $('#flip').prop('checked')
 				};
 
 				initLeaf(testLeaf, true);
@@ -407,7 +409,13 @@
 				ctx.translate( canvasRotationCenterX, canvasRotationCenterY);
 				ctx.rotate( angle );
 				ctx.translate( -canvasRotationCenterX, -canvasRotationCenterY );
-				ctx.drawImage(img, x, y, leaf.size, leaf.size * img.height / img.width); 
+				if(leaf.mirrorX) {
+					ctx.scale(-1, 1);
+					ctx.drawImage(img, -x, y, leaf.size, leaf.size * img.height / img.width);
+				}
+				else {
+					ctx.drawImage(img, x, y, leaf.size, leaf.size * img.height / img.width);
+				}
 				ctx.restore();
 
 				//Show rotation point
@@ -448,6 +456,7 @@
 					testLeaf.y = parseFloat($('#y').val());
 					testLeaf.a = parseFloat($('#angle').val());
 					testLeaf.size = parseFloat($('#size').val());
+					testLeaf.mirrorX = $('#flip').prop('checked');
 
 					animateLeaf(testLeaf, ctx);
 				}
