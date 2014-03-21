@@ -9,7 +9,7 @@
 			height: 750,
 			scale: 20,
 			host: 'https://solarsunflower.herokuapp.com',
-			treeImg: 'resources/tree-6branches.svg',
+			treeImg: 'resources/tree-12branches.svg',
 			treeWidth: 400,
 			treeHeight: 550,
 			branches: 6,
@@ -146,9 +146,9 @@
 				size: 16,
 				siteId: 4
 			},{
-				x: 15,
-				y: 5.35,
-				a: 2, 
+				x: 15.1,
+				y: 5.3,
+				a: 2.2, 
 				size: 16,
 				mirrorX: true,
 				siteId: 4
@@ -249,6 +249,240 @@
 				size: 25,
 				mirrorX: true,
 				siteId: 6
+			},{
+				x: 4.22,
+				y: 5.2,
+				a: 4, 
+				size: 16,
+				siteId: 7
+			},{
+				x: 3.8,
+				y: 4.35,
+				a: 0, 
+				size: 16,
+				mirrorX: true,
+				siteId: 7
+			},{
+				x: 5.35,
+				y: 4,
+				a: 5.1, 
+				size: 16,
+				siteId: 7
+			},{
+				x: 5.7,
+				y: 4.25,
+				a: 5.8, 
+				size: 16,
+				siteId: 7
+			},{
+				x: 6.45,
+				y: 5.45,
+				a: .8, 
+				size: 16,
+				mirrorX: true,
+				siteId: 7
+			},{
+				x: 3.8,
+				y: 2.6,
+				a: 4.7, 
+				size: 25,
+				siteId: 7
+			},{
+				x: 10.9,
+				y: 4.2,
+				a: 5.2, 
+				size: 16,
+				siteId: 8
+			},{
+				x: 11.62,
+				y: 1,
+				a: 5, 
+				size: 16,
+				siteId: 8
+			},{
+				x: 12.2,
+				y: 1.6,
+				a: 1.3, 
+				size: 16,
+				mirrorX: true,
+				siteId: 8
+			},{
+				x: 13.4,
+				y: 2.2,
+				a: 2.5, 
+				size: 16,
+				mirrorX: true,
+				siteId: 8
+			},{
+				x: 12.95,
+				y: 3.25,
+				a: 1.9, 
+				size: 16,
+				mirrorX: true,
+				siteId: 8
+			},{
+				x: 13.5,
+				y: .95,
+				a: 2.1, 
+				size: 25,
+				mirrorX: true,
+				siteId: 8
+			},{
+				x: 15,
+				y: 10,
+				a: 0, 
+				size: 16,
+				siteId: 9
+			},{
+				x: 16.2,
+				y: 9.9,
+				a: 1.1, 
+				size: 16,
+				mirrorX: true,
+				siteId: 9
+			},{
+				x: 16.6,
+				y: 9.9,
+				a: 1.8, 
+				size: 16,
+				mirrorX: true,
+				siteId: 9
+			},{
+				x: 17.25,
+				y: 11.1,
+				a: 1.1, 
+				size: 16,
+				siteId: 9
+			},{
+				x: 13.5,
+				y: 11.2,
+				a: 2.4, 
+				size: 16,
+				mirrorX: true,
+				siteId: 9
+			},{
+				x: 18,
+				y: 10.5,
+				a: 2.6, 
+				size: 25,
+				mirrorX: true,
+				siteId: 9
+			},{
+				x: 5.7,
+				y: 10.5,
+				a: 3.8, 
+				size: 16,
+				siteId: 10
+			},{
+				x: 3.85,
+				y: 10.5,
+				a: 5.6, 
+				size: 16,
+				mirrorX: true,
+				siteId: 10
+			},{
+				x: 2,
+				y: 10.35,
+				a: 5.3, 
+				size: 16,
+				mirrorX: true,
+				siteId: 10
+			},{
+				x: 1.9,
+				y: 9.1,
+				a: 4.7, 
+				size: 16,
+				siteId: 10
+			},{
+				x: 4,
+				y: 9.3,
+				a: 4.3, 
+				size: 16,
+				siteId: 10
+			},{
+				x: 1.5,
+				y: 9.9,
+				a: 6, 
+				size: 25,
+				mirrorX: true,
+				siteId: 10
+			},{
+				x: 14.2,
+				y: 13.9,
+				a: 2.2, 
+				size: 16,
+				mirrorX: true,
+				siteId: 11
+			},{
+				x: 15.7,
+				y: 14.15,
+				a: 1.9, 
+				size: 16,
+				mirrorX: true,
+				siteId: 11
+			},{
+				x: 14.45,
+				y: 14.9,
+				a: 1.2, 
+				size: 16,
+				siteId: 11
+			},{
+				x: 13.1,
+				y: 14.2,
+				a: 3.5, 
+				size: 16,
+				mirrorX: true,
+				siteId: 11
+			},{
+				x: 12.4,
+				y: 14.3,
+				a: 3.7, 
+				size: 16,
+				mirrorX: true,
+				siteId: 11
+			},{
+				x: 16.6,
+				y: 14.7,
+				a: .6, 
+				size: 25,
+				siteId: 11
+			},{
+				x: 8.25,
+				y: 15.21,
+				a: 2.6, 
+				size: 16,
+				siteId: 12
+			},{
+				x: 7.7,
+				y: 15.3,
+				a: 5.2, 
+				size: 16,
+				mirrorX: true,
+				siteId: 12
+			},{
+				x: 5,
+				y: 15.84,
+				a: 3.6, 
+				size: 16,
+				siteId: 12
+			},{
+				x: 5.7,
+				y: 15,
+				a: 4.9, 
+				size: 16,
+				siteId: 12
+			},{
+				x: 6.4,
+				y: 14,
+				a: 4.4, 
+				size: 16,
+				siteId: 12
+			},{
+				x: 4.2,
+				y: 14.75,
+				a: 4, 
+				size: 25,
+				siteId: 12
 			}]
 		};
 
