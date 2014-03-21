@@ -581,6 +581,14 @@
 				}
 			};
 
+			var setImageForSite = function(siteId, leafImage)  {
+				for(var i = 0; i < leaves.length; i++) {
+					if(leaves[i].siteId == siteId) {
+						leaves[i].kineticImage.setImage(leafImage);
+					}
+				}
+			};
+
 			var initLeaf = function(leaf, isTest) {
 				leaf.b = new Body(physics, {
 					x: leaf.x,
@@ -604,7 +612,7 @@
 					leaf.joint = physics.world.CreateJoint(jointDef);
 				}
 
-				var redLeaf = new Image;
+				var outlineLeaf = new Image;
 				var greenLeaf = new Image;
 
 				greenLeaf.onload = function() {
@@ -628,20 +636,18 @@
 					stage.add(layer);
 
 					leaf.kineticImage.on('mouseover', function() {
-						// leaf.kineticImage.setImage(redLeaf);
+						setImageForSite(leaf.siteId, outlineLeaf);
 						branchOutlines[leaf.siteId - 1].kineticImage.show();
 						layer.draw();
 					});
 
-					redLeaf.onload = function() {
-						leaf.kineticImage.on('mouseout', function() {
-							// leaf.kineticImage.setImage(greenLeaf);
-							branchOutlines[leaf.siteId - 1].kineticImage.hide();
-							layer.draw();
-						});
-					}
+					leaf.kineticImage.on('mouseout', function() {
+						setImageForSite(leaf.siteId, greenLeaf);
+						branchOutlines[leaf.siteId - 1].kineticImage.hide();
+						layer.draw();
+					});
 
-					redLeaf.src = "resources/leaf-red.svg";
+					outlineLeaf.src = "resources/outlined-leaf-green.svg";
 				}
 
 				greenLeaf.src = "resources/leaf-green.svg";
