@@ -59,38 +59,41 @@
 
 	GreenStemVis.prototype = {
 		init: function() {
-			console.log('init');
 			var me = this,
 				settings = me.settings,
-				$element = $(this.element),
-				$canvas = $('<canvas width="' + settings.width + '" height="' + settings.height + '"></canvas>')
-					.appendTo($element),
-				canvas = $canvas[0],
+				stage = new Kinetic.Stage({
+					width: settings.width,
+					height: settings.height,
+					container: me.element
+				}),
+				layer = new Kinetic.Layer(),
+				$element = $(me.element),
+				canvas = layer.getCanvas(),
 				testLeaf = true;
 
 			Date.prototype.format = function(format) //author: meizz
-				{
-				  var o = {
-				    "M+" : this.getMonth()+1, //month
-				    "d+" : this.getDate(),    //day
-				    "h+" : this.getHours(),   //hour
-				    "m+" : this.getMinutes(), //minute
-				    "s+" : this.getSeconds(), //second
-				    "q+" : Math.floor((this.getMonth()+3)/3),  //quarter
-				    "S" : this.getMilliseconds() //millisecond
-				  }
+			{
+				var o = {
+					"M+": this.getMonth() + 1, //month
+					"d+": this.getDate(), //day
+					"h+": this.getHours(), //hour
+					"m+": this.getMinutes(), //minute
+					"s+": this.getSeconds(), //second
+					"q+": Math.floor((this.getMonth() + 3) / 3), //quarter
+					"S": this.getMilliseconds() //millisecond
+				}
 
-				  if(/(y+)/.test(format)) format=format.replace(RegExp.$1,
-				    (this.getFullYear()+"").substr(4 - RegExp.$1.length));
-				  for(var k in o)if(new RegExp("("+ k +")").test(format))
-				    format = format.replace(RegExp.$1,
-				      RegExp.$1.length==1 ? o[k] :
-				        ("00"+ o[k]).substr((""+ o[k]).length));
-				  return format;
-				};
+				if (/(y+)/.test(format)) format = format.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
+				for (var k in o)
+					if (new RegExp("(" + k + ")").test(format))
+						format = format.replace(RegExp.$1,
+							RegExp.$1.length == 1 ? o[k] :
+							("00" + o[k]).substr(("" + o[k]).length));
+				return format;
+			};
 
 			// $.getJSON( settings.host + "/public/summary.json", function( data ) {
-   //              $.each(data.readings, function( index, value ) {
+			//              $.each(data.readings, function( index, value ) {
 			// 		var dateStr = new Date(value.collection_time).format("yyyy-MM-dd h:mm:ss"),
 			// 			siteName = value.site_name,
 			// 			statusNames = value.status_names,
@@ -121,8 +124,8 @@
 			// 		$siteContainer.append($readingsContainer);
 			// 		$textContainer.append($siteContainer);
 			// 	});	
-   //          });
-			
+			//          });
+
 			var b2Vec2 = Box2D.Common.Math.b2Vec2,
 				b2BodyDef = Box2D.Dynamics.b2BodyDef,
 				b2Body = Box2D.Dynamics.b2Body,
@@ -274,7 +277,7 @@
 			// 	bodyDef.position.Set(x, y);
 			// 	rect = physics.world.CreateBody(bodyDef);
 			// 	rect.CreateFixture(fixDef);
-				
+
 			// 	return rect;
 			// }
 
@@ -323,7 +326,7 @@
 				lastFrame = new Date().getTime();
 
 			physics = window.physics = new Physics(canvas);
-			
+
 			// physics.debug();
 
 			var tree = new Body(physics, {
@@ -333,23 +336,38 @@
 				width: .1,
 				height: 1
 			});
-			
-			var leaves = settings.leaves, 
+
+			var leaves = settings.leaves,
 				jointDef,
 				DEGTORAD;
+
+			var initTree = function() {
+				var treeImage = new Image;
+
+				treeImage.onload = function() {
+					layer.add(new Kinetic.Image({
+						x: 0,
+						y: 0,
+						width: settings.treeWidth,
+						height: settings.treeHeight,
+						image: treeImage
+					}))
+				}
+				treeImage.src = settings.treeImg;
+			};
 
 			var initLeaf = function(leaf, isTest) {
 				leaf.b = new Body(physics, {
 					x: leaf.x,
 					y: leaf.y,
-					width: 0.25,
+					width: 0.1,
 					height: 1,
 					angle: leaf.a
 				});
 
-				if(!isTest) {
+				if (!isTest) {
 					jointDef = new Box2D.Dynamics.Joints.b2RevoluteJointDef();
-					jointDef.Initialize(tree.body, leaf.b.body, 
+					jointDef.Initialize(tree.body, leaf.b.body,
 						new b2Vec2(leaf.x + 0.5, leaf.y - 0.5));
 					jointDef.enableLimit = true;
 					jointDef.enableMotor = true;
@@ -361,15 +379,54 @@
 					leaf.joint = physics.world.CreateJoint(jointDef);
 				}
 
-				leaf.img = new Image;
-				leaf.img.src = "resources/leaf-green.svg";
-			}
- 
-			for(var i = 0; i < leaves.length; i++) {
+				var redLeaf = new Image;
+				var greenLeaf = new Image;
+
+				greenLeaf.onload = function() {
+					if(leaf.kineticImage) {
+						leaf.kineticImage.destroy();
+					}
+					leaf.kineticImage = new Kinetic.Image({
+						x: leaf.x * settings.scale,
+						y: leaf.y * settings.scale,
+						width: leaf.size,
+						height: leaf.size,
+						image: greenLeaf,
+						// rotation: leaf.a * (180 / Math.PI ),
+						offset: { x:0, y:leaf.size }
+					});
+
+					leaf.kineticImage.rotate(leaf.a * (180 / Math.PI ));
+
+					// add the shape to the layer
+					layer.add(leaf.kineticImage);
+
+					stage.add(layer);
+
+					leaf.kineticImage.on('mouseover', function() {
+						leaf.kineticImage.setImage(redLeaf);
+						layer.draw();
+					});
+
+					redLeaf.onload = function() {
+						leaf.kineticImage.on('mouseout', function() {
+							leaf.kineticImage.setImage(greenLeaf);
+							layer.draw();
+						});
+					}
+
+					redLeaf.src = "resources/leaf-red.svg";
+				}
+
+				greenLeaf.src = "resources/leaf-green.svg";
+			};
+
+			initTree();
+			for (var i = 0; i < leaves.length; i++) {
 				initLeaf(leaves[i]);
 			}
 
-			if(testLeaf) {
+			if (testLeaf) {
 				testLeaf = {
 					x: parseFloat($('#x').val()),
 					y: parseFloat($('#y').val()),
@@ -381,24 +438,20 @@
 				initLeaf(testLeaf, true);
 			}
 
-			var treeImg = new Image;
-			treeImg.src = settings.treeImg;
-
 			var animateLeaf = function(leaf, ctx) {
 				var angle, body, x, y, img, canvasRotationCenterX, canvasRotationCenterY;
 
-				if(leaf.joint) {
+				if (leaf.joint) {
 					var joint_angle = leaf.joint.GetJointAngle() * (180 / 3.14);
 
-					if( Math.abs(joint_angle) > 0.2 ) {
+					if (Math.abs(joint_angle) > 0.2) {
 						var rando = Math.floor(Math.random() * (10 - 2 + 1)) + 2;
-				        leaf.joint.SetMaxMotorTorque( rando * Math.abs( joint_angle / 30 ) );
-				        leaf.joint.SetMotorSpeed( -joint_angle / 30 );
-				    }
-				    body = leaf.b.body;
-				    angle = body.GetAngle();
-				}
-				else {
+						leaf.joint.SetMaxMotorTorque(rando * Math.abs(joint_angle / 30));
+						leaf.joint.SetMotorSpeed(-joint_angle / 30);
+					}
+					body = leaf.b.body;
+					angle = body.GetAngle();
+				} else {
 					angle = leaf.a;
 				}
 
@@ -407,56 +460,36 @@
 				x = leaf.x * settings.scale;
 				y = leaf.y * settings.scale;
 
-				canvasRotationCenterX = 0 + x;
-				canvasRotationCenterY = 0 + y + (img.height * 2.2);
-
-				ctx.save();
-				ctx.translate( canvasRotationCenterX, canvasRotationCenterY);
-				ctx.rotate( angle );
-				ctx.translate( -canvasRotationCenterX, -canvasRotationCenterY );
-				if(leaf.mirrorX) {
-					ctx.scale(-1, 1);
-					ctx.drawImage(img, -x, y, leaf.size, leaf.size * img.height / img.width);
+				if(leaf.kineticImage) {
+					leaf.kineticImage.rotation(angle * (180 / Math.PI ));
+					if(leaf.mirrorX) {
+						leaf.kineticImage.scale({x: -1, y: 1});
+					}
 				}
-				else {
-					ctx.drawImage(img, x, y, leaf.size, leaf.size * img.height / img.width);
-				}
-				ctx.restore();
-
-				//Show rotation point
-				// ctx.fillRect(canvasRotationCenterX, canvasRotationCenterY, 5, 5);
 			}
 
 			$('#controls').find('input').change(function() {
-				console.log('leaf changed');
 				initLeaf(testLeaf, true);
 			});
 
 			window.gameLoop = function() {
-
 				var ctx = physics.context;
 				var tm = new Date().getTime();
 				var dt = (tm - lastFrame) / 1000;
 				var body, angle, canvasRotationCenterX, canvasRotationCenterY, img;
-			    
-			    if(dt > 1/15) { 
-			    	dt = 1/15; 
-			    }
-			    
-			    physics.step(dt);
-			    lastFrame = tm;
 
-			    ctx.save();
-				ctx.clearRect(0, 0, canvas.width, canvas.height);
-				ctx.drawImage(treeImg, 0, 0, settings.treeWidth, settings.treeHeight * treeImg.height / treeImg.width); 
-				ctx.setTransform(1, 0, 0, 1, 0, 0);
-				ctx.restore();
+				if (dt > 1 / 15) {
+					dt = 1 / 15;
+				}
 
-				for(var i = 0; i < leaves.length; i++) {
+				physics.step(dt);
+				lastFrame = tm;
+
+				for (var i = 0; i < leaves.length; i++) {
 					animateLeaf(leaves[i], ctx);
 				}
 
-				if(testLeaf) {
+				if (testLeaf) {
 					testLeaf.x = parseFloat($('#x').val());
 					testLeaf.y = parseFloat($('#y').val());
 					testLeaf.a = parseFloat($('#angle').val());
@@ -466,18 +499,8 @@
 					animateLeaf(testLeaf, ctx);
 				}
 
-				/*
-				var body = testBody.body;
-				// var angle = body.GetAngle() + parseFloat($('#angle').val());
-				var angle = parseFloat($('#angle').val());
-				// var x = body.GetPosition().x;
-				var x = parseFloat($('#x').val());
-				// var y = body.GetPosition().y;
-				var y = parseFloat($('#y').val());
+				layer.draw();
 
-				var canvasRotationCenterX = 0 + x;
-				var canvasRotationCenterY = 0 + y + (img.height * 2.2);
-				*/
 				requestAnimationFrame(gameLoop);
 			};
 
