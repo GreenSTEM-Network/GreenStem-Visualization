@@ -12,6 +12,7 @@
 			treeImg: 'resources/tree-6branches.svg',
 			treeWidth: 400,
 			treeHeight: 550,
+			branches: 6,
 			leaves: [{
 				x: 7.1,
 				y: 12,
@@ -273,7 +274,17 @@
 				layer = new Kinetic.Layer(),
 				$element = $(me.element),
 				canvas = layer.getCanvas(),
-				testLeaf = true;
+				testLeaf = true,
+				b2BodyDef = Box2D.Dynamics.b2BodyDef,
+				b2Body = Box2D.Dynamics.b2Body,
+				b2FixtureDef = Box2D.Dynamics.b2FixtureDef,
+				b2Fixture = Box2D.Dynamics.b2Fixture,
+				b2JointDef = Box2D.Dynamics.Joints.b2RevoluteJointDef,
+				b2World = Box2D.Dynamics.b2World,
+				b2PolygonShape = Box2D.Collision.Shapes.b2PolygonShape,
+				b2Vec2 = Box2D.Common.Math.b2Vec2,
+				b2DebugDraw = Box2D.Dynamics.b2DebugDraw,
+				branchOutlines = [];
 
 			Date.prototype.format = function(format) //author: meizz
 			{
@@ -330,26 +341,14 @@
 			// 	});	
 			//          });
 
-			var b2Vec2 = Box2D.Common.Math.b2Vec2,
-				b2BodyDef = Box2D.Dynamics.b2BodyDef,
-				b2Body = Box2D.Dynamics.b2Body,
-				b2FixtureDef = Box2D.Dynamics.b2FixtureDef,
-				b2Fixture = Box2D.Dynamics.b2Fixture,
-				b2JointDef = Box2D.Dynamics.Joints.b2RevoluteJointDef,
-				b2World = Box2D.Dynamics.b2World,
-				// b2MassData = Box2D.Collision.Shapes.b2MassData,
-				b2PolygonShape = Box2D.Collision.Shapes.b2PolygonShape,
-				// b2CircleShape = Box2D.Collision.Shapes.b2CircleShape,
-				b2DebugDraw = Box2D.Dynamics.b2DebugDraw;
-
-
 			var Physics = window.Physics = function(element, scale) {
 				var me = this,
 					gravity = new b2Vec2(settings.gravityX, settings.gravityY);
 
-				me.world = new b2World(gravity);
-				me.context = element.getContext("2d");
+				me.world = new b2World(gravity),
+				me.context = element.getContext("2d"),
 				me.scale = scale || settings.scale;
+
 				me.dtRemaining = 0;
 				me.stepAmount = 1 / 60;
 			};
@@ -364,7 +363,6 @@
 				this.world.SetDebugDraw(this.debugDraw);
 			};
 
-			var i = 0;
 			Physics.prototype.step = function(dt) {
 				this.dtRemaining += dt;
 				while (this.dtRemaining > this.stepAmount) {
@@ -560,6 +558,29 @@
 				treeImage.src = settings.treeImg;
 			};
 
+			var initBranchOutlines = function() {
+				var i = 0;
+
+				for(; i < settings.branches; i++) {
+					branchOutlines[i] = {
+						image: new Image
+					}
+
+					branchOutlines[i].image.src = 'resources/outline-branch' + (i + 1) + '.svg';
+
+					branchOutlines[i].kineticImage = new Kinetic.Image({
+						x: 0,
+						y: -13,
+						width: settings.treeWidth,
+						height: settings.treeHeight,
+						image: branchOutlines[i].image,
+						visible: false
+					});
+
+					layer.add(branchOutlines[i].kineticImage);
+				}
+			};
+
 			var initLeaf = function(leaf, isTest) {
 				leaf.b = new Body(physics, {
 					x: leaf.x,
@@ -596,7 +617,6 @@
 						width: leaf.size,
 						height: leaf.size,
 						image: greenLeaf,
-						// rotation: leaf.a * (180 / Math.PI ),
 						offset: { x:0, y:leaf.size }
 					});
 
@@ -608,13 +628,15 @@
 					stage.add(layer);
 
 					leaf.kineticImage.on('mouseover', function() {
-						leaf.kineticImage.setImage(redLeaf);
+						// leaf.kineticImage.setImage(redLeaf);
+						branchOutlines[leaf.siteId - 1].kineticImage.show();
 						layer.draw();
 					});
 
 					redLeaf.onload = function() {
 						leaf.kineticImage.on('mouseout', function() {
-							leaf.kineticImage.setImage(greenLeaf);
+							// leaf.kineticImage.setImage(greenLeaf);
+							branchOutlines[leaf.siteId - 1].kineticImage.hide();
 							layer.draw();
 						});
 					}
@@ -626,6 +648,8 @@
 			};
 
 			initTree();
+			initBranchOutlines();
+
 			for (var i = 0; i < leaves.length; i++) {
 				initLeaf(leaves[i]);
 			}
