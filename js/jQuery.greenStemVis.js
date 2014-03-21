@@ -4,14 +4,14 @@
 	var pluginName = "greenStemVis",
 		defaults = {
 			gravityX: 3,
-			gravityY: 3,
+			gravityY: 10,
 			width: 1024,
 			height: 750,
 			scale: 20,
 			host: 'https://solarsunflower.herokuapp.com',
 			treeImg: 'resources/tree-6branches.svg',
 			treeWidth: 400,
-			treeHeight: 400,
+			treeHeight: 550,
 			leaves: [{
 				x: 7.1,
 				y: 12,
@@ -531,7 +531,7 @@
 
 			physics = window.physics = new Physics(canvas);
 
-			// physics.debug();
+			physics.debug();
 
 			var tree = new Body(physics, {
 				type: 'static',
@@ -551,7 +551,7 @@
 				treeImage.onload = function() {
 					layer.add(new Kinetic.Image({
 						x: 0,
-						y: 0,
+						y: -13,
 						width: settings.treeWidth,
 						height: settings.treeHeight,
 						image: treeImage
@@ -564,8 +564,8 @@
 				leaf.b = new Body(physics, {
 					x: leaf.x,
 					y: leaf.y,
-					width: 0.1,
-					height: 1,
+					width: 0.2,
+					height: 0.2,
 					angle: leaf.a
 				});
 
