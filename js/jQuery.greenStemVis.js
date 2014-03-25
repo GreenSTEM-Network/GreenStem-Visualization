@@ -284,7 +284,8 @@
 				b2PolygonShape = Box2D.Collision.Shapes.b2PolygonShape,
 				b2Vec2 = Box2D.Common.Math.b2Vec2,
 				b2DebugDraw = Box2D.Dynamics.b2DebugDraw,
-				branchOutlines = [];
+				branchOutlines = [],
+				siteNames = [];
 
 			Date.prototype.format = function(format) //author: meizz
 			{
@@ -307,39 +308,27 @@
 				return format;
 			};
 
-			// $.getJSON( settings.host + "/public/summary.json", function( data ) {
-			//              $.each(data.readings, function( index, value ) {
-			// 		var dateStr = new Date(value.collection_time).format("yyyy-MM-dd h:mm:ss"),
-			// 			siteName = value.site_name,
-			// 			statusNames = value.status_names,
-			// 			$siteContainer = $('<div>' + siteName + '</div>'),
-			// 			$readingsContainer = $('<table></table>'),
-			// 			imgSrc, $readingsRow;
+			$.getJSON(settings.host + "/public/summary.json", function(data) {
+				$.each(data.readings, function(dataIndex, value) {
+					var dateStr = new Date(value.collection_time).format("yyyy-MM-dd h:mm:ss"),
+						siteName = value.site_name,
+						statusNames = value.status_names;
 
-			// 		$readingsRow = $readingsContainer.append('<tr></tr>');
+					siteNames[dataIndex] = siteName;
 
-			// 		$.each(statusNames, function( index, value ) {
-			// 			if(value == 'GREEN') {
-			// 				imgSrc = 'resources/leaf-green.svg';
-			// 			}
-			// 			else if(value == 'YELLOW') {
-			// 				imgSrc = 'resources/leaf-yellow.svg';
-			// 			}
-			// 			else if(value == 'RED') {
-			// 				imgSrc = 'resources/leaf-red.svg';
-			// 			}
-			// 			else {
-			// 				imgSrc = 'resources/leaf-brown.svg';
-			// 			}
-			// 			// $siteContainer.append('<img src="' + imgSrc + '" width="50"></img>');
-			// 			$readingsRow.append('<td><img src="' + imgSrc + '" width="50"></img></td>');
-			// 		});
-
-			// 		$readingsContainer.append($readingsRow);
-			// 		$siteContainer.append($readingsContainer);
-			// 		$textContainer.append($siteContainer);
-			// 	});	
-			//          });
+					$.each(statusNames, function(index, value) {
+						if (value == 'GREEN') {
+							imgSrc = 'resources/leaf-green.svg';
+						} else if (value == 'YELLOW') {
+							imgSrc = 'resources/leaf-yellow.svg';
+						} else if (value == 'RED') {
+							imgSrc = 'resources/leaf-red.svg';
+						} else {
+							imgSrc = 'resources/leaf-brown.svg';
+						}
+					});
+				});
+			});
 
 			var Physics = window.Physics = function(element, scale) {
 				var me = this,
@@ -561,7 +550,7 @@
 			var initBranchOutlines = function() {
 				var i = 0;
 
-				for(; i < settings.branches; i++) {
+				for (; i < settings.branches; i++) {
 					branchOutlines[i] = {
 						image: new Image
 					}
@@ -581,13 +570,22 @@
 				}
 			};
 
-			var setImageForSite = function(siteId, leafImage)  {
-				for(var i = 0; i < leaves.length; i++) {
-					if(leaves[i].siteId == siteId) {
+			var setImageForSite = function(siteId, leafImage) {
+				for (var i = 0; i < leaves.length; i++) {
+					if (leaves[i].siteId == siteId) {
 						leaves[i].kineticImage.setImage(leafImage);
 					}
 				}
 			};
+
+			var text = new Kinetic.Text({
+				x: 10,
+				y: 10 + settings.treeHeight,
+				fontFamily: 'Calibri',
+				fontSize: 24,
+				text: '',
+				fill: 'black'
+			});
 
 			var initLeaf = function(leaf, isTest) {
 				leaf.b = new Body(physics, {
@@ -616,7 +614,7 @@
 				var greenLeaf = new Image;
 
 				greenLeaf.onload = function() {
-					if(leaf.kineticImage) {
+					if (leaf.kineticImage) {
 						leaf.kineticImage.destroy();
 					}
 					leaf.kineticImage = new Kinetic.Image({
@@ -625,25 +623,33 @@
 						width: leaf.size,
 						height: leaf.size,
 						image: greenLeaf,
-						offset: { x:0, y:leaf.size }
+						offset: {
+							x: 0,
+							y: leaf.size
+						}
 					});
 
-					leaf.kineticImage.rotate(leaf.a * (180 / Math.PI ));
+					leaf.kineticImage.rotate(leaf.a * (180 / Math.PI));
 
 					// add the shape to the layer
 					layer.add(leaf.kineticImage);
 
 					stage.add(layer);
 
+					leaf.kineticImage.cache();
+					leaf.kineticImage.filters([Kinetic.Filters.Grayscale]);
+
 					leaf.kineticImage.on('mouseover', function() {
 						setImageForSite(leaf.siteId, outlineLeaf);
 						branchOutlines[leaf.siteId - 1].kineticImage.show();
+						text.setText(siteNames[leaf.siteId - 1] ? siteNames[leaf.siteId - 1] : '');
 						layer.draw();
 					});
 
 					leaf.kineticImage.on('mouseout', function() {
 						setImageForSite(leaf.siteId, greenLeaf);
 						branchOutlines[leaf.siteId - 1].kineticImage.hide();
+						text.setText('');
 						layer.draw();
 					});
 
@@ -655,6 +661,8 @@
 
 			initTree();
 			initBranchOutlines();
+
+			layer.add(text);
 
 			for (var i = 0; i < leaves.length; i++) {
 				initLeaf(leaves[i]);
@@ -694,10 +702,13 @@
 				x = leaf.x * settings.scale;
 				y = leaf.y * settings.scale;
 
-				if(leaf.kineticImage) {
-					leaf.kineticImage.rotation(angle * (180 / Math.PI ));
-					if(leaf.mirrorX) {
-						leaf.kineticImage.scale({x: -1, y: 1});
+				if (leaf.kineticImage) {
+					leaf.kineticImage.rotation(angle * (180 / Math.PI));
+					if (leaf.mirrorX) {
+						leaf.kineticImage.scale({
+							x: -1,
+							y: 1
+						});
 					}
 				}
 			}
