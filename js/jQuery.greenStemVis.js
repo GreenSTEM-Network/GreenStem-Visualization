@@ -4,487 +4,428 @@
 	var pluginName = "greenStemVis",
 		defaults = {
 			gravityX: 3,
-			gravityY: 10,
+			gravityY: 1,
 			width: 1024,
 			height: 750,
 			scale: 20,
 			host: 'https://solarsunflower.herokuapp.com',
 			treeWidth: 400,
 			treeHeight: 550,
-			branches: 12,
-			leaves: [{
-				x: 7.1,
-				y: 12,
-				a: 0.5,
-				size: 16,
-				mirrorX: true,
-				siteId: 1
-			}, {
-				x: 5.4,
-				y: 11.45,
-				a: 4.5,
-				size: 16,
-				siteId: 1
-			}, {
-				x: 5.13,
-				y: 12.68,
-				a: 3.9,
-				size: 16,
-				siteId: 1
-			}, {
-				x: 3.325,
-				y: 12.6,
-				a: 4.8,
-				size: 16,
-				mirrorX: true,
-				siteId: 1
-			}, {
-				x: 2.85,
-				y: 12.45,
-				a: 5.91,
-				size: 16,
-				mirrorX: true,
-				siteId: 1
-			}, {
-				x: 1.65,
-				y: 11.78,
-				a: 6,
-				size: 25,
-				mirrorX: true,
-				siteId: 1
-			}, {
-				x: 5.7,
-				y: 8.2,
-				a: .9,
-				size: 16,
-				mirrorX: true,
-				siteId: 2
-			}, {
-				x: 4.43,
-				y: 6.84,
-				a: 4.9,
-				size: 16,
-				siteId: 2
-			}, {
-				x: 5.25,
-				y: 9.15,
-				a: 4.2,
-				size: 16,
-				siteId: 2
-			}, {
-				x: 3.63,
-				y: 8.09,
-				a: 5,
-				size: 16,
-				mirrorX: true,
-				siteId: 2
-			}, {
-				x: 3.23,
-				y: 7.82,
-				a: 5.9,
-				size: 16,
-				mirrorX: true,
-				siteId: 2
-			}, {
-				x: 2.6,
-				y: 6.7,
-				a: 0,
-				size: 25,
-				mirrorX: true,
-				siteId: 2
-			}, {
-				x: 7.45,
-				y: 4.7,
-				a: 0.3,
-				size: 16,
-				mirrorX: true,
-				siteId: 3
-			}, {
-				x: 6.82,
-				y: 2.65,
-				a: 4.8,
-				size: 16,
-				siteId: 3
-			}, {
-				x: 7.25,
-				y: 2,
-				a: 5.1,
-				size: 16,
-				siteId: 3
-			}, {
-				x: 9.2,
-				y: 4.2,
-				a: 1.5,
-				size: 16,
-				mirrorX: true,
-				siteId: 3
-			}, {
-				x: 9.76,
-				y: 5.91,
-				a: 5.7,
-				size: 16,
-				siteId: 3
-			}, {
-				x: 8.2,
-				y: 2.8,
-				a: 1.4,
-				size: 25,
-				mirrorX: true,
-				siteId: 3
-			}, {
-				x: 12.11,
-				y: 6,
-				a: 1.2,
-				size: 16,
-				mirrorX: true,
-				siteId: 4
-			}, {
-				x: 13.15,
-				y: 5.2,
-				a: 5.4,
-				size: 16,
-				siteId: 4
-			}, {
-				x: 15.1,
-				y: 5.3,
-				a: 2.2,
-				size: 16,
-				mirrorX: true,
-				siteId: 4
-			}, {
-				x: 15.42,
-				y: 6.42,
-				a: 2,
-				size: 16,
-				mirrorX: true,
-				siteId: 4
-			}, {
-				x: 12.75,
-				y: 8.05,
-				a: 0.3,
-				size: 16,
-				siteId: 4
-			}, {
-				x: 15.1,
-				y: 4.1,
-				a: 6,
-				size: 25,
-				siteId: 4
-			}, {
-				x: 14.6,
-				y: 8.62,
-				a: 5.8,
-				size: 16,
-				siteId: 5
-			}, {
-				x: 15.35,
-				y: 8.11,
-				a: 1.3,
-				size: 16,
-				mirrorX: true,
-				siteId: 5
-			}, {
-				x: 16.89,
-				y: 8.6,
-				a: 2.8,
-				size: 16,
-				mirrorX: true,
-				siteId: 5
-			}, {
-				x: 17.58,
-				y: 8.25,
-				a: 1.2,
-				size: 16,
-				siteId: 5
-			}, {
-				x: 17.85,
-				y: 7.85,
-				a: .1,
-				size: 16,
-				siteId: 5
-			}, {
-				x: 17.58,
-				y: 7,
-				a: 1.6,
-				size: 25,
-				mirrorX: true,
-				siteId: 5
-			}, {
-				x: 15.6,
-				y: 11.4,
-				a: 2,
-				size: 16,
-				mirrorX: true,
-				siteId: 6
-			}, {
-				x: 16.91,
-				y: 12.47,
-				a: 1.2,
-				size: 16,
-				siteId: 6
-			}, {
-				x: 16.6,
-				y: 12.67,
-				a: 3.6,
-				size: 16,
-				mirrorX: true,
-				siteId: 6
-			}, {
-				x: 14.9,
-				y: 12.72,
-				a: 1,
-				size: 16,
-				siteId: 6
-			}, {
-				x: 13.55,
-				y: 12.8,
-				a: 1.5,
-				size: 16,
-				siteId: 6
-			}, {
-				x: 18.2,
-				y: 12.1,
-				a: 2.7,
-				size: 25,
-				mirrorX: true,
-				siteId: 6
-			}, {
-				x: 4.22,
-				y: 5.2,
-				a: 4,
-				size: 16,
-				siteId: 7
-			}, {
-				x: 3.8,
-				y: 4.35,
-				a: 0,
-				size: 16,
-				mirrorX: true,
-				siteId: 7
-			}, {
-				x: 5.35,
-				y: 4,
-				a: 5.1,
-				size: 16,
-				siteId: 7
-			}, {
-				x: 5.7,
-				y: 4.25,
-				a: 5.8,
-				size: 16,
-				siteId: 7
-			}, {
-				x: 6.45,
-				y: 5.45,
-				a: .8,
-				size: 16,
-				mirrorX: true,
-				siteId: 7
-			}, {
-				x: 3.8,
-				y: 2.6,
-				a: 4.7,
-				size: 25,
-				siteId: 7
-			}, {
-				x: 10.9,
-				y: 4.2,
-				a: 5.2,
-				size: 16,
-				siteId: 8
-			}, {
-				x: 11.62,
-				y: 1,
-				a: 5,
-				size: 16,
-				siteId: 8
-			}, {
-				x: 12.2,
-				y: 1.6,
-				a: 1.3,
-				size: 16,
-				mirrorX: true,
-				siteId: 8
-			}, {
-				x: 13.4,
-				y: 2.2,
-				a: 2.5,
-				size: 16,
-				mirrorX: true,
-				siteId: 8
-			}, {
-				x: 12.95,
-				y: 3.25,
-				a: 1.9,
-				size: 16,
-				mirrorX: true,
-				siteId: 8
-			}, {
-				x: 13.5,
-				y: .95,
-				a: 2.1,
-				size: 25,
-				mirrorX: true,
-				siteId: 8
-			}, {
-				x: 15,
-				y: 10,
-				a: 0,
-				size: 16,
-				siteId: 9
-			}, {
-				x: 16.2,
-				y: 9.9,
-				a: 1.1,
-				size: 16,
-				mirrorX: true,
-				siteId: 9
-			}, {
-				x: 16.6,
-				y: 9.9,
-				a: 1.8,
-				size: 16,
-				mirrorX: true,
-				siteId: 9
-			}, {
-				x: 17.25,
-				y: 11.1,
-				a: 1.1,
-				size: 16,
-				siteId: 9
-			}, {
-				x: 13.5,
-				y: 11.2,
-				a: 2.4,
-				size: 16,
-				mirrorX: true,
-				siteId: 9
-			}, {
-				x: 18,
-				y: 10.5,
-				a: 2.6,
-				size: 25,
-				mirrorX: true,
-				siteId: 9
-			}, {
-				x: 5.7,
-				y: 10.5,
-				a: 3.8,
-				size: 16,
-				siteId: 10
-			}, {
-				x: 3.85,
-				y: 10.5,
-				a: 5.6,
-				size: 16,
-				mirrorX: true,
-				siteId: 10
-			}, {
-				x: 2,
-				y: 10.35,
-				a: 5.3,
-				size: 16,
-				mirrorX: true,
-				siteId: 10
-			}, {
-				x: 1.9,
-				y: 9.1,
-				a: 4.7,
-				size: 16,
-				siteId: 10
-			}, {
-				x: 4,
-				y: 9.3,
-				a: 4.3,
-				size: 16,
-				siteId: 10
-			}, {
-				x: 1.5,
-				y: 9.9,
-				a: 6,
-				size: 25,
-				mirrorX: true,
-				siteId: 10
-			}, {
-				x: 14.2,
-				y: 13.9,
-				a: 2.2,
-				size: 16,
-				mirrorX: true,
-				siteId: 11
-			}, {
-				x: 15.7,
-				y: 14.15,
-				a: 1.9,
-				size: 16,
-				mirrorX: true,
-				siteId: 11
-			}, {
-				x: 14.45,
-				y: 14.9,
-				a: 1.2,
-				size: 16,
-				siteId: 11
-			}, {
-				x: 13.1,
-				y: 14.2,
-				a: 3.5,
-				size: 16,
-				mirrorX: true,
-				siteId: 11
-			}, {
-				x: 12.4,
-				y: 14.3,
-				a: 3.7,
-				size: 16,
-				mirrorX: true,
-				siteId: 11
-			}, {
-				x: 16.6,
-				y: 14.7,
-				a: .6,
-				size: 25,
-				siteId: 11
-			}, {
-				x: 8.25,
-				y: 15.21,
-				a: 2.6,
-				size: 16,
-				siteId: 12
-			}, {
-				x: 7.7,
-				y: 15.3,
-				a: 5.2,
-				size: 16,
-				mirrorX: true,
-				siteId: 12
-			}, {
-				x: 5,
-				y: 15.84,
-				a: 3.6,
-				size: 16,
-				siteId: 12
-			}, {
-				x: 5.7,
-				y: 15,
-				a: 4.9,
-				size: 16,
-				siteId: 12
-			}, {
-				x: 6.4,
-				y: 14,
-				a: 4.4,
-				size: 16,
-				siteId: 12
-			}, {
-				x: 4.2,
-				y: 14.75,
-				a: 4,
-				size: 25,
-				siteId: 12
-			}]
+			// branches: 12,
+			branches: [
+				[{
+					x: 7.1,
+					y: 12,
+					a: 0.5,
+					size: 16,
+					mirrorX: true
+				}, {
+					x: 5.4,
+					y: 11.45,
+					a: 4.5,
+					size: 16
+				}, {
+					x: 5.13,
+					y: 12.68,
+					a: 3.9,
+					size: 16
+				}, {
+					x: 3.325,
+					y: 12.6,
+					a: 4.8,
+					size: 16,
+					mirrorX: true
+				}, {
+					x: 2.85,
+					y: 12.45,
+					a: 5.91,
+					size: 16,
+					mirrorX: true
+				}, {
+					x: 1.65,
+					y: 11.78,
+					a: 6,
+					size: 25,
+					mirrorX: true
+				}],
+				[{
+					x: 5.7,
+					y: 8.2,
+					a: .9,
+					size: 16,
+					mirrorX: true
+				}, {
+					x: 4.43,
+					y: 6.84,
+					a: 4.9,
+					size: 16
+				}, {
+					x: 5.25,
+					y: 9.15,
+					a: 4.2,
+					size: 16
+				}, {
+					x: 3.63,
+					y: 8.09,
+					a: 5,
+					size: 16,
+					mirrorX: true
+				}, {
+					x: 3.23,
+					y: 7.82,
+					a: 5.9,
+					size: 16,
+					mirrorX: true
+				}, {
+					x: 2.6,
+					y: 6.7,
+					a: 0,
+					size: 25,
+					mirrorX: true
+				}],
+				[{
+					x: 7.45,
+					y: 4.7,
+					a: 0.3,
+					size: 16,
+					mirrorX: true
+				}, {
+					x: 6.82,
+					y: 2.65,
+					a: 4.8,
+					size: 16
+				}, {
+					x: 7.25,
+					y: 2,
+					a: 5.1,
+					size: 16
+				}, {
+					x: 9.2,
+					y: 4.2,
+					a: 1.5,
+					size: 16,
+					mirrorX: true
+				}, {
+					x: 9.76,
+					y: 5.91,
+					a: 5.7,
+					size: 16
+				}, {
+					x: 8.2,
+					y: 2.8,
+					a: 1.4,
+					size: 25,
+					mirrorX: true
+				}],
+				[{
+					x: 12.11,
+					y: 6,
+					a: 1.2,
+					size: 16,
+					mirrorX: true
+				}, {
+					x: 13.15,
+					y: 5.2,
+					a: 5.4,
+					size: 16
+				}, {
+					x: 15.1,
+					y: 5.3,
+					a: 2.2,
+					size: 16,
+					mirrorX: true
+				}, {
+					x: 15.42,
+					y: 6.42,
+					a: 2,
+					size: 16,
+					mirrorX: true
+				}, {
+					x: 12.75,
+					y: 8.05,
+					a: 0.3,
+					size: 16
+				}, {
+					x: 15.1,
+					y: 4.1,
+					a: 6,
+					size: 25
+				}],
+				[{
+					x: 14.6,
+					y: 8.62,
+					a: 5.8,
+					size: 16
+				}, {
+					x: 15.35,
+					y: 8.11,
+					a: 1.3,
+					size: 16,
+					mirrorX: true
+				}, {
+					x: 16.89,
+					y: 8.6,
+					a: 2.8,
+					size: 16,
+					mirrorX: true
+				}, {
+					x: 17.58,
+					y: 8.25,
+					a: 1.2,
+					size: 16
+				}, {
+					x: 17.85,
+					y: 7.85,
+					a: .1,
+					size: 16
+				}, {
+					x: 17.58,
+					y: 7,
+					a: 1.6,
+					size: 25,
+					mirrorX: true
+				}],
+				[{
+					x: 15.6,
+					y: 11.4,
+					a: 2,
+					size: 16,
+					mirrorX: true
+				}, {
+					x: 16.91,
+					y: 12.47,
+					a: 1.2,
+					size: 16
+				}, {
+					x: 16.6,
+					y: 12.67,
+					a: 3.6,
+					size: 16,
+					mirrorX: true
+				}, {
+					x: 14.9,
+					y: 12.72,
+					a: 1,
+					size: 16
+				}, {
+					x: 13.55,
+					y: 12.8,
+					a: 1.5,
+					size: 16
+				}, {
+					x: 18.2,
+					y: 12.1,
+					a: 2.7,
+					size: 25,
+					mirrorX: true
+				// }],
+				// [{
+				// 	x: 4.22,
+				// 	y: 5.2,
+				// 	a: 4,
+				// 	size: 16
+				// }, {
+				// 	x: 3.8,
+				// 	y: 4.35,
+				// 	a: 0,
+				// 	size: 16,
+				// 	mirrorX: true
+				// }, {
+				// 	x: 5.35,
+				// 	y: 4,
+				// 	a: 5.1,
+				// 	size: 16
+				// }, {
+				// 	x: 5.7,
+				// 	y: 4.25,
+				// 	a: 5.8,
+				// 	size: 16
+				// }, {
+				// 	x: 6.45,
+				// 	y: 5.45,
+				// 	a: .8,
+				// 	size: 16,
+				// 	mirrorX: true
+				// }, {
+				// 	x: 3.8,
+				// 	y: 2.6,
+				// 	a: 4.7,
+				// 	size: 25
+				// }],
+				// [{
+				// 	x: 10.9,
+				// 	y: 4.2,
+				// 	a: 5.2,
+				// 	size: 16
+				// }, {
+				// 	x: 11.62,
+				// 	y: 1,
+				// 	a: 5,
+				// 	size: 16
+				// }, {
+				// 	x: 12.2,
+				// 	y: 1.6,
+				// 	a: 1.3,
+				// 	size: 16,
+				// 	mirrorX: true
+				// }, {
+				// 	x: 13.4,
+				// 	y: 2.2,
+				// 	a: 2.5,
+				// 	size: 16,
+				// 	mirrorX: true
+				// }, {
+				// 	x: 12.95,
+				// 	y: 3.25,
+				// 	a: 1.9,
+				// 	size: 16,
+				// 	mirrorX: true
+				// }, {
+				// 	x: 13.5,
+				// 	y: .95,
+				// 	a: 2.1,
+				// 	size: 25,
+				// 	mirrorX: true
+				// }],
+				// [{
+				// 	x: 15,
+				// 	y: 10,
+				// 	a: 0,
+				// 	size: 16
+				// }, {
+				// 	x: 16.2,
+				// 	y: 9.9,
+				// 	a: 1.1,
+				// 	size: 16,
+				// 	mirrorX: true
+				// }, {
+				// 	x: 16.6,
+				// 	y: 9.9,
+				// 	a: 1.8,
+				// 	size: 16,
+				// 	mirrorX: true
+				// }, {
+				// 	x: 17.25,
+				// 	y: 11.1,
+				// 	a: 1.1,
+				// 	size: 16
+				// }, {
+				// 	x: 13.5,
+				// 	y: 11.2,
+				// 	a: 2.4,
+				// 	size: 16,
+				// 	mirrorX: true
+				// }, {
+				// 	x: 18,
+				// 	y: 10.5,
+				// 	a: 2.6,
+				// 	size: 25,
+				// 	mirrorX: true
+				// }],
+				// [{
+				// 	x: 5.7,
+				// 	y: 10.5,
+				// 	a: 3.8,
+				// 	size: 16
+				// }, {
+				// 	x: 3.85,
+				// 	y: 10.5,
+				// 	a: 5.6,
+				// 	size: 16,
+				// 	mirrorX: true
+				// }, {
+				// 	x: 2,
+				// 	y: 10.35,
+				// 	a: 5.3,
+				// 	size: 16,
+				// 	mirrorX: true
+				// }, {
+				// 	x: 1.9,
+				// 	y: 9.1,
+				// 	a: 4.7,
+				// 	size: 16
+				// }, {
+				// 	x: 4,
+				// 	y: 9.3,
+				// 	a: 4.3,
+				// 	size: 16
+				// }, {
+				// 	x: 1.5,
+				// 	y: 9.9,
+				// 	a: 6,
+				// 	size: 25,
+				// 	mirrorX: true
+				// }],
+				// [{
+				// 	x: 14.2,
+				// 	y: 13.9,
+				// 	a: 2.2,
+				// 	size: 16,
+				// 	mirrorX: true
+				// }, {
+				// 	x: 15.7,
+				// 	y: 14.15,
+				// 	a: 1.9,
+				// 	size: 16,
+				// 	mirrorX: true
+				// }, {
+				// 	x: 14.45,
+				// 	y: 14.9,
+				// 	a: 1.2,
+				// 	size: 16
+				// }, {
+				// 	x: 13.1,
+				// 	y: 14.2,
+				// 	a: 3.5,
+				// 	size: 16,
+				// 	mirrorX: true
+				// }, {
+				// 	x: 12.4,
+				// 	y: 14.3,
+				// 	a: 3.7,
+				// 	size: 16,
+				// 	mirrorX: true
+				// }, {
+				// 	x: 16.6,
+				// 	y: 14.7,
+				// 	a: .6,
+				// 	size: 25
+				// }],
+				// [{
+				// 	x: 8.25,
+				// 	y: 15.21,
+				// 	a: 2.6,
+				// 	size: 16
+				// }, {
+				// 	x: 7.7,
+				// 	y: 15.3,
+				// 	a: 5.2,
+				// 	size: 16,
+				// 	mirrorX: true
+				// }, {
+				// 	x: 5,
+				// 	y: 15.84,
+				// 	a: 3.6,
+				// 	size: 16
+				// }, {
+				// 	x: 5.7,
+				// 	y: 15,
+				// 	a: 4.9,
+				// 	size: 16
+				// }, {
+				// 	x: 6.4,
+				// 	y: 14,
+				// 	a: 4.4,
+				// 	size: 16
+				// }, {
+				// 	x: 4.2,
+				// 	y: 14.75,
+				// 	a: 4,
+				// 	size: 25
+				}]
+			]
 		};
-
+	debugger
 	// The actual plugin constructor
 	function GreenStemVis(element, options) {
 		this.element = element;
@@ -507,7 +448,8 @@
 				layer = new Kinetic.Layer(),
 				$element = $(me.element),
 				canvas = layer.getCanvas(),
-				testLeaf = true,
+				testLeaf = false,
+				branches = settings.branches,
 				b2BodyDef = Box2D.Dynamics.b2BodyDef,
 				b2Body = Box2D.Dynamics.b2Body,
 				b2FixtureDef = Box2D.Dynamics.b2FixtureDef,
@@ -518,9 +460,11 @@
 				b2Vec2 = Box2D.Common.Math.b2Vec2,
 				b2DebugDraw = Box2D.Dynamics.b2DebugDraw,
 				branchOutlines = [],
-				siteNames = [];
+				siteNames = [],
+				jointDef,
+				DEGTORAD;
 
-			settings.treeImg = 'resources/tree-' + settings.branches +'branches.svg';
+			settings.treeImg = 'resources/tree-' + branches.length + 'branches.svg';
 
 			Date.prototype.format = function(format) //author: meizz
 			{
@@ -762,11 +706,7 @@
 				width: .1,
 				height: 1
 			});
-
-			var leaves = settings.leaves,
-				jointDef,
-				DEGTORAD;
-
+			
 			var initTree = function() {
 				var treeImage = new Image;
 
@@ -785,7 +725,7 @@
 			var initBranchOutlines = function() {
 				var i = 0;
 
-				for (; i < settings.branches; i++) {
+				for (; i < branches.length; i++) {
 					branchOutlines[i] = {
 						image: new Image
 					}
@@ -805,11 +745,9 @@
 				}
 			};
 
-			var setImageForSite = function(siteId, leafImage) {
-				for (var i = 0; i < leaves.length; i++) {
-					if (leaves[i].siteId == siteId) {
-						leaves[i].kineticImage.setImage(leafImage);
-					}
+			var setImageForSite = function(branchIndex, leafImage) {
+				for (var i = 0; i < branches[branchIndex].length; i++) {
+					branches[branchIndex][i].kineticImage.setImage(leafImage);
 				}
 			};
 
@@ -822,7 +760,9 @@
 				fill: 'black'
 			});
 
-			var initLeaf = function(leaf, isTest) {
+			var initLeaf = function(leaf, branchIndex, isTest) {
+				leaf.branchIndex = branchIndex;
+
 				leaf.b = new Body(physics, {
 					x: leaf.x,
 					y: leaf.y,
@@ -871,22 +811,24 @@
 
 					stage.add(layer);
 
-					leaf.kineticImage.cache();
-					leaf.kineticImage.filters([Kinetic.Filters.Grayscale]);
+					// leaf.kineticImage.cache();
+					// leaf.kineticImage.filters([Kinetic.Filters.Grayscale]);
 
-					leaf.kineticImage.on('mouseover', function() {
-						setImageForSite(leaf.siteId, outlineLeaf);
-						branchOutlines[leaf.siteId - 1].kineticImage.show();
-						text.setText(siteNames[leaf.siteId - 1] ? siteNames[leaf.siteId - 1] : '');
-						layer.draw();
-					});
+					outlineLeaf.onload = function() {
+						leaf.kineticImage.on('mouseover', function() {
+							setImageForSite(leaf.branchIndex, outlineLeaf);
+							branchOutlines[leaf.branchIndex].kineticImage.show();
+							text.setText(siteNames[branchIndex] ? siteNames[branchIndex] : '');
+							layer.draw();
+						});
 
-					leaf.kineticImage.on('mouseout', function() {
-						setImageForSite(leaf.siteId, greenLeaf);
-						branchOutlines[leaf.siteId - 1].kineticImage.hide();
-						text.setText('');
-						layer.draw();
-					});
+						leaf.kineticImage.on('mouseout', function() {
+							setImageForSite(leaf.branchIndex, greenLeaf);
+							branchOutlines[branchIndex].kineticImage.hide();
+							text.setText('');
+							layer.draw();
+						});
+					}
 
 					outlineLeaf.src = "resources/outlined-leaf-green.svg";
 				}
@@ -899,8 +841,10 @@
 
 			layer.add(text);
 
-			for (var i = 0; i < Math.min(leaves.length, (settings.branches * 6)); i++) {
-				initLeaf(leaves[i]);
+			for (var i = 0; i < branches.length; i++) {
+				for (var j = 0; j < branches[i].length; j++) {
+					initLeaf(branches[i][j], i);
+				}
 			}
 
 			if (testLeaf) {
@@ -912,7 +856,7 @@
 					mirrorX: $('#flip').prop('checked')
 				};
 
-				initLeaf(testLeaf, true);
+				initLeaf(testLeaf, -1, true);
 			}
 
 			var animateLeaf = function(leaf, ctx) {
@@ -965,8 +909,10 @@
 				physics.step(dt);
 				lastFrame = tm;
 
-				for (var i = 0; i < leaves.length; i++) {
-					animateLeaf(leaves[i], ctx);
+				for (var i = 0; i < branches.length; i++) {
+					for (var j = 0; j < branches[i].length; j++) {
+						animateLeaf(branches[i][j], ctx);
+					}
 				}
 
 				if (testLeaf) {
