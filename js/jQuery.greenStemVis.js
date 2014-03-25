@@ -9,10 +9,9 @@
 			height: 750,
 			scale: 20,
 			host: 'https://solarsunflower.herokuapp.com',
-			treeImg: 'resources/tree-12branches.svg',
 			treeWidth: 400,
 			treeHeight: 550,
-			branches: 6,
+			branches: 12,
 			leaves: [{
 				x: 7.1,
 				y: 12,
@@ -521,6 +520,8 @@
 				branchOutlines = [],
 				siteNames = [];
 
+			settings.treeImg = 'resources/tree-' + settings.branches +'branches.svg';
+
 			Date.prototype.format = function(format) //author: meizz
 			{
 				var o = {
@@ -898,7 +899,7 @@
 
 			layer.add(text);
 
-			for (var i = 0; i < leaves.length; i++) {
+			for (var i = 0; i < Math.min(leaves.length, (settings.branches * 6)); i++) {
 				initLeaf(leaves[i]);
 			}
 
