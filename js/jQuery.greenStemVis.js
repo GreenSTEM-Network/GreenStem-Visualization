@@ -9,7 +9,7 @@
 			height: 750,
 			scale: 20,
 			host: 'https://solarsunflower.herokuapp.com',
-			treeImg: 'resources/tree-6branches.svg',
+			treeImg: 'resources/tree-12branches.svg',
 			treeWidth: 400,
 			treeHeight: 550,
 			branches: 6,
@@ -21,42 +21,42 @@
 				mirrorX: true,
 				siteId: 1
 			},{
-				x: 5.3,
+				x: 5.4,
 				y: 11.45,
 				a: 4.5,
 				size: 16,
 				siteId: 1
 			},{
 				x: 5.13,
-				y: 12.79,
+				y: 12.68,
 				a: 3.9,
 				size: 16,
 				siteId: 1
 			},{
 				x: 3.325,
-				y: 12.7,
+				y: 12.6,
 				a: 4.8, 
 				size: 16,
 				mirrorX: true,
 				siteId: 1
 			},{
-				x: 2.8,
-				y: 12.3,
+				x: 2.85,
+				y: 12.45,
 				a: 5.91,
 				size: 16,
 				mirrorX: true,
 				siteId: 1
 			},{
-				x: 1.4,
-				y: 11.5,
-				a: 5.8,
+				x: 1.65,
+				y: 11.78,
+				a: 6,
 				size: 25,
 				mirrorX: true,
 				siteId: 1
 			},{
 				x: 5.7,
-				y: 8.1,
-				a: 0.5, 
+				y: 8.2,
+				a: .9, 
 				size: 16,
 				mirrorX: true,
 				siteId: 2
@@ -88,47 +88,47 @@
 				siteId: 2
 			},{
 				x: 2.6,
-				y: 6.22,
+				y: 6.7,
 				a: 0, 
 				size: 25,
 				mirrorX: true,
 				siteId: 2
 			},{
-				x: 7.37,
-				y: 4.6,
+				x: 7.45,
+				y: 4.7,
 				a: 0.3, 
 				size: 16,
 				mirrorX: true,
 				siteId: 3
 			},{
 				x: 6.82,
-				y: 2.55,
+				y: 2.65,
 				a: 4.8, 
 				size: 16,
 				siteId: 3
 			},{
 				x: 7.25,
-				y: 1.66,
+				y: 2,
 				a: 5.1, 
 				size: 16,
 				siteId: 3
 			},{
 				x: 9.2,
-				y: 4,
+				y: 4.2,
 				a: 1.5, 
 				size: 16,
 				mirrorX: true,
 				siteId: 3
 			},{
-				x: 9.73,
-				y: 5.89,
-				a: 5.5, 
+				x: 9.76,
+				y: 5.91,
+				a: 5.7, 
 				size: 16,
 				siteId: 3
 			},{
-				x: 8.64,
-				y: 2.55,
-				a: 1.2, 
+				x: 8.2,
+				y: 2.8,
+				a: 1.4, 
 				size: 25,
 				mirrorX: true,
 				siteId: 3
@@ -141,14 +141,14 @@
 				siteId: 4
 			},{
 				x: 13.15,
-				y: 5.1,
+				y: 5.2,
 				a: 5.4, 
 				size: 16,
 				siteId: 4
 			},{
-				x: 15,
-				y: 5.35,
-				a: 2, 
+				x: 15.1,
+				y: 5.3,
+				a: 2.2, 
 				size: 16,
 				mirrorX: true,
 				siteId: 4
@@ -161,14 +161,14 @@
 				siteId: 4
 			},{
 				x: 12.75,
-				y: 8.02,
+				y: 8.05,
 				a: 0.3, 
 				size: 16,
 				siteId: 4
 			},{
-				x: 14.93,
-				y: 3.54,
-				a: 6.1, 
+				x: 15.1,
+				y: 4.1,
+				a: 6, 
 				size: 25,
 				siteId: 4
 			},{
@@ -186,25 +186,25 @@
 				siteId: 5
 			},{
 				x: 16.89,
-				y: 8.65,
+				y: 8.6,
 				a: 2.8, 
 				size: 16,
 				mirrorX: true,
 				siteId: 5
 			},{
 				x: 17.58,
-				y: 8.31,
-				a: 1.3, 
+				y: 8.25,
+				a: 1.2, 
 				size: 16,
 				siteId: 5
 			},{
-				x: 17.82,
-				y: 7.83,
-				a: 0, 
+				x: 17.85,
+				y: 7.85,
+				a: .1, 
 				size: 16,
 				siteId: 5
 			},{
-				x: 17.99,
+				x: 17.58,
 				y: 7,
 				a: 1.6, 
 				size: 25,
@@ -212,7 +212,7 @@
 				siteId: 5
 			},{
 				x: 15.6,
-				y: 11.5,
+				y: 11.4,
 				a: 2, 
 				size: 16,
 				mirrorX: true,
@@ -220,13 +220,13 @@
 			},{
 				x: 16.91,
 				y: 12.47,
-				a: 1.4, 
+				a: 1.2, 
 				size: 16,
 				siteId: 6
 			},{
-				x: 16.36,
-				y: 12.76,
-				a: 3.1, 
+				x: 16.6,
+				y: 12.67,
+				a: 3.6, 
 				size: 16,
 				mirrorX: true,
 				siteId: 6
@@ -237,18 +237,252 @@
 				size: 16,
 				siteId: 6
 			},{
-				x: 13.4,
-				y: 12.98,
-				a: 1.3, 
+				x: 13.55,
+				y: 12.8,
+				a: 1.5, 
 				size: 16,
 				siteId: 6
 			},{
 				x: 18.2,
-				y: 12.5,
-				a: 2.6, 
+				y: 12.1,
+				a: 2.7, 
 				size: 25,
 				mirrorX: true,
 				siteId: 6
+			},{
+				x: 4.22,
+				y: 5.2,
+				a: 4, 
+				size: 16,
+				siteId: 7
+			},{
+				x: 3.8,
+				y: 4.35,
+				a: 0, 
+				size: 16,
+				mirrorX: true,
+				siteId: 7
+			},{
+				x: 5.35,
+				y: 4,
+				a: 5.1, 
+				size: 16,
+				siteId: 7
+			},{
+				x: 5.7,
+				y: 4.25,
+				a: 5.8, 
+				size: 16,
+				siteId: 7
+			},{
+				x: 6.45,
+				y: 5.45,
+				a: .8, 
+				size: 16,
+				mirrorX: true,
+				siteId: 7
+			},{
+				x: 3.8,
+				y: 2.6,
+				a: 4.7, 
+				size: 25,
+				siteId: 7
+			},{
+				x: 10.9,
+				y: 4.2,
+				a: 5.2, 
+				size: 16,
+				siteId: 8
+			},{
+				x: 11.62,
+				y: 1,
+				a: 5, 
+				size: 16,
+				siteId: 8
+			},{
+				x: 12.2,
+				y: 1.6,
+				a: 1.3, 
+				size: 16,
+				mirrorX: true,
+				siteId: 8
+			},{
+				x: 13.4,
+				y: 2.2,
+				a: 2.5, 
+				size: 16,
+				mirrorX: true,
+				siteId: 8
+			},{
+				x: 12.95,
+				y: 3.25,
+				a: 1.9, 
+				size: 16,
+				mirrorX: true,
+				siteId: 8
+			},{
+				x: 13.5,
+				y: .95,
+				a: 2.1, 
+				size: 25,
+				mirrorX: true,
+				siteId: 8
+			},{
+				x: 15,
+				y: 10,
+				a: 0, 
+				size: 16,
+				siteId: 9
+			},{
+				x: 16.2,
+				y: 9.9,
+				a: 1.1, 
+				size: 16,
+				mirrorX: true,
+				siteId: 9
+			},{
+				x: 16.6,
+				y: 9.9,
+				a: 1.8, 
+				size: 16,
+				mirrorX: true,
+				siteId: 9
+			},{
+				x: 17.25,
+				y: 11.1,
+				a: 1.1, 
+				size: 16,
+				siteId: 9
+			},{
+				x: 13.5,
+				y: 11.2,
+				a: 2.4, 
+				size: 16,
+				mirrorX: true,
+				siteId: 9
+			},{
+				x: 18,
+				y: 10.5,
+				a: 2.6, 
+				size: 25,
+				mirrorX: true,
+				siteId: 9
+			},{
+				x: 5.7,
+				y: 10.5,
+				a: 3.8, 
+				size: 16,
+				siteId: 10
+			},{
+				x: 3.85,
+				y: 10.5,
+				a: 5.6, 
+				size: 16,
+				mirrorX: true,
+				siteId: 10
+			},{
+				x: 2,
+				y: 10.35,
+				a: 5.3, 
+				size: 16,
+				mirrorX: true,
+				siteId: 10
+			},{
+				x: 1.9,
+				y: 9.1,
+				a: 4.7, 
+				size: 16,
+				siteId: 10
+			},{
+				x: 4,
+				y: 9.3,
+				a: 4.3, 
+				size: 16,
+				siteId: 10
+			},{
+				x: 1.5,
+				y: 9.9,
+				a: 6, 
+				size: 25,
+				mirrorX: true,
+				siteId: 10
+			},{
+				x: 14.2,
+				y: 13.9,
+				a: 2.2, 
+				size: 16,
+				mirrorX: true,
+				siteId: 11
+			},{
+				x: 15.7,
+				y: 14.15,
+				a: 1.9, 
+				size: 16,
+				mirrorX: true,
+				siteId: 11
+			},{
+				x: 14.45,
+				y: 14.9,
+				a: 1.2, 
+				size: 16,
+				siteId: 11
+			},{
+				x: 13.1,
+				y: 14.2,
+				a: 3.5, 
+				size: 16,
+				mirrorX: true,
+				siteId: 11
+			},{
+				x: 12.4,
+				y: 14.3,
+				a: 3.7, 
+				size: 16,
+				mirrorX: true,
+				siteId: 11
+			},{
+				x: 16.6,
+				y: 14.7,
+				a: .6, 
+				size: 25,
+				siteId: 11
+			},{
+				x: 8.25,
+				y: 15.21,
+				a: 2.6, 
+				size: 16,
+				siteId: 12
+			},{
+				x: 7.7,
+				y: 15.3,
+				a: 5.2, 
+				size: 16,
+				mirrorX: true,
+				siteId: 12
+			},{
+				x: 5,
+				y: 15.84,
+				a: 3.6, 
+				size: 16,
+				siteId: 12
+			},{
+				x: 5.7,
+				y: 15,
+				a: 4.9, 
+				size: 16,
+				siteId: 12
+			},{
+				x: 6.4,
+				y: 14,
+				a: 4.4, 
+				size: 16,
+				siteId: 12
+			},{
+				x: 4.2,
+				y: 14.75,
+				a: 4, 
+				size: 25,
+				siteId: 12
 			}]
 		};
 
