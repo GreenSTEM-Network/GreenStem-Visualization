@@ -4,48 +4,47 @@
 	var pluginName = "greenStemVis",
 		defaults = {
 			gravityX: 3,
-			gravityY: 1,
+			gravityY: 30,
 			width: 1024,
 			height: 750,
 			scale: 20,
 			host: 'https://solarsunflower.herokuapp.com',
 			treeWidth: 400,
 			treeHeight: 550,
-			// branches: 12,
 			branches: [
 				[{
-					x: 7.1,
-					y: 12,
-					a: 0.5,
-					size: 16,
+					x: 1.65,
+					y: 11.78,
+					a: 6,
+					size: 25,
 					mirrorX: true
-				}, {
-					x: 5.4,
-					y: 11.45,
-					a: 4.5,
-					size: 16
-				}, {
-					x: 5.13,
-					y: 12.68,
-					a: 3.9,
-					size: 16
-				}, {
-					x: 3.325,
-					y: 12.6,
-					a: 4.8,
-					size: 16,
-					mirrorX: true
-				}, {
+				},{
 					x: 2.85,
 					y: 12.45,
 					a: 5.91,
 					size: 16,
 					mirrorX: true
-				}, {
-					x: 1.65,
-					y: 11.78,
-					a: 6,
-					size: 25,
+				},{
+					x: 3.325,
+					y: 12.6,
+					a: 4.8,
+					size: 16,
+					mirrorX: true
+				},{
+					x: 5.13,
+					y: 12.68,
+					a: 3.9,
+					size: 16
+				},{
+					x: 5.4,
+					y: 11.45,
+					a: 4.5,
+					size: 16
+				},{
+					x: 7.1,
+					y: 12,
+					a: 0.5,
+					size: 16,
 					mirrorX: true
 				}],
 				[{
@@ -425,7 +424,7 @@
 				}]
 			]
 		};
-	debugger
+
 	// The actual plugin constructor
 	function GreenStemVis(element, options) {
 		this.element = element;
@@ -487,26 +486,42 @@
 				return format;
 			};
 
+			var convertStatusNameToImgCfg = function(statusName) {
+				if (statusName == 'GREEN') {
+					return {normalSrc: 'resources/leaf-green.svg', outlineSrc: 'resources/outlined-leaf-green.svg'};
+				} else if (statusName == 'YELLOW') {
+					return {normalSrc: 'resources/leaf-yellow.svg', outlineSrc: 'resources/outlined-leaf-yellow.svg'};
+				} else if (statusName == 'RED') {
+					return {normalSrc: 'resources/leaf-red.svg', outlineSrc: 'resources/outlined-leaf-red.svg'};
+				} 
+			}
+
 			$.getJSON(settings.host + "/public/summary.json", function(data) {
 				$.each(data.readings, function(dataIndex, value) {
 					var dateStr = new Date(value.collection_time).format("yyyy-MM-dd h:mm:ss"),
 						siteName = value.site_name,
 						statusNames = value.status_names;
-
+					console.log('dataIndex', dataIndex);
 					siteNames[dataIndex] = siteName;
 
-					$.each(statusNames, function(index, value) {
-						if (value == 'GREEN') {
-							imgSrc = 'resources/leaf-green.svg';
-						} else if (value == 'YELLOW') {
-							imgSrc = 'resources/leaf-yellow.svg';
-						} else if (value == 'RED') {
-							imgSrc = 'resources/leaf-red.svg';
-						} else {
-							imgSrc = 'resources/leaf-brown.svg';
-						}
-					});
+					//Set Average Reading TODO Hook up to status property once implemented
+					branches[dataIndex][0].imgCfg = convertStatusNameToImgCfg('GREEN');
+					//Set Sensor 1, Sensor 2 and Sensor 3 Reading
+					branches[dataIndex][1].imgCfg = convertStatusNameToImgCfg(statusNames[0]);
+					branches[dataIndex][2].imgCfg = convertStatusNameToImgCfg(statusNames[1]);
+					branches[dataIndex][3].imgCfg = convertStatusNameToImgCfg(statusNames[2]);
+					//Set Voltage Reading
+					branches[dataIndex][4].imgCfg = convertStatusNameToImgCfg(value.voltage);
+					//Set Temp Reading
+					branches[dataIndex][5].imgCfg = convertStatusNameToImgCfg(value.temp);
 				});
+
+				for (var i = 0; i < branches.length; i++) {
+					console.log('init', i);
+					for (var j = 0; j < branches[i].length; j++) {
+						initLeaf(branches[i][j], i);
+					}
+				}
 			});
 
 			var Physics = window.Physics = function(element, scale) {
@@ -745,9 +760,15 @@
 				}
 			};
 
-			var setImageForSite = function(branchIndex, leafImage) {
+			var setNormalImageForSite = function(branchIndex) {
 				for (var i = 0; i < branches[branchIndex].length; i++) {
-					branches[branchIndex][i].kineticImage.setImage(leafImage);
+					branches[branchIndex][i].kineticImage.setImage(branches[branchIndex][i].imgCfg.normalImg);
+				}
+			};
+
+			var setOutlineImageForSite = function(branchIndex) {
+				for (var i = 0; i < branches[branchIndex].length; i++) {
+					branches[branchIndex][i].kineticImage.setImage(branches[branchIndex][i].imgCfg.outlineImg);
 				}
 			};
 
@@ -761,6 +782,17 @@
 			});
 
 			var initLeaf = function(leaf, branchIndex, isTest) {
+				if(!leaf.imgCfg) {
+					leaf.imgCfg = {
+						normalSrc: 'resources/leaf-brown.svg', 
+						outlineSrc: 'resources/outlined-leaf-brown.svg', 
+						disabled: true
+					};
+				}
+				
+				leaf.imgCfg.normalImg = new Image;
+				leaf.imgCfg.outlineLeafImg = new Image;
+
 				leaf.branchIndex = branchIndex;
 
 				leaf.b = new Body(physics, {
@@ -783,12 +815,9 @@
 					jointDef.upperAngle = 50 * DEGTORAD;
 
 					leaf.joint = physics.world.CreateJoint(jointDef);
-				}
+				}				
 
-				var outlineLeaf = new Image;
-				var greenLeaf = new Image;
-
-				greenLeaf.onload = function() {
+				leaf.imgCfg.normalImg.onload = function() {
 					if (leaf.kineticImage) {
 						leaf.kineticImage.destroy();
 					}
@@ -797,7 +826,7 @@
 						y: leaf.y * settings.scale,
 						width: leaf.size,
 						height: leaf.size,
-						image: greenLeaf,
+						image: leaf.imgCfg.normalImg,
 						offset: {
 							x: 0,
 							y: leaf.size
@@ -811,41 +840,37 @@
 
 					stage.add(layer);
 
-					// leaf.kineticImage.cache();
-					// leaf.kineticImage.filters([Kinetic.Filters.Grayscale]);
+					if(leaf.imgCfg.disabled) {
+						leaf.kineticImage.cache();
+						leaf.kineticImage.filters([Kinetic.Filters.Grayscale]);
+					}
 
-					outlineLeaf.onload = function() {
+					leaf.imgCfg.outlineLeafImg.onload = function() {
 						leaf.kineticImage.on('mouseover', function() {
-							setImageForSite(leaf.branchIndex, outlineLeaf);
+							setNormalImageForSite(leaf.branchIndex);
 							branchOutlines[leaf.branchIndex].kineticImage.show();
 							text.setText(siteNames[branchIndex] ? siteNames[branchIndex] : '');
 							layer.draw();
 						});
 
 						leaf.kineticImage.on('mouseout', function() {
-							setImageForSite(leaf.branchIndex, greenLeaf);
+							setOutlineImageForSite(leaf.branchIndex);
 							branchOutlines[branchIndex].kineticImage.hide();
 							text.setText('');
 							layer.draw();
 						});
 					}
 
-					outlineLeaf.src = "resources/outlined-leaf-green.svg";
+					leaf.imgCfg.outlineLeafImg.src = leaf.imgCfg.outlineSrc;
 				}
 
-				greenLeaf.src = "resources/leaf-green.svg";
+				leaf.imgCfg.normalImg.src = leaf.imgCfg.normalSrc;
 			};
 
 			initTree();
 			initBranchOutlines();
 
 			layer.add(text);
-
-			for (var i = 0; i < branches.length; i++) {
-				for (var j = 0; j < branches[i].length; j++) {
-					initLeaf(branches[i][j], i);
-				}
-			}
 
 			if (testLeaf) {
 				testLeaf = {
