@@ -1,6 +1,5 @@
 ;
 (function($, window, document, undefined) {
-
 	var pluginName = "greenStemVis",
 		defaults = {
 			gravityX: 3,
@@ -12,6 +11,7 @@
 			treeWidth: 400,
 			treeHeight: 550,
 			branches: [
+				//Branch 1
 				[{
 					x: 1.65,
 					y: 11.78,
@@ -47,10 +47,23 @@
 					size: 16,
 					mirrorX: true
 				}],
+				//Branch 2
 				[{
-					x: 5.7,
-					y: 8.2,
-					a: .9,
+					x: 2.6,
+					y: 6.7,
+					a: 0,
+					size: 25,
+					mirrorX: true
+				}, {
+					x: 3.23,
+					y: 7.82,
+					a: 5.9,
+					size: 16,
+					mirrorX: true
+				}, {
+					x: 3.63,
+					y: 8.09,
+					a: 5,
 					size: 16,
 					mirrorX: true
 				}, {
@@ -64,39 +77,28 @@
 					a: 4.2,
 					size: 16
 				}, {
-					x: 3.63,
-					y: 8.09,
-					a: 5,
+					x: 5.7,
+					y: 8.2,
+					a: .9,
 					size: 16,
-					mirrorX: true
-				}, {
-					x: 3.23,
-					y: 7.82,
-					a: 5.9,
-					size: 16,
-					mirrorX: true
-				}, {
-					x: 2.6,
-					y: 6.7,
-					a: 0,
-					size: 25,
 					mirrorX: true
 				}],
+				//Branch 3
 				[{
-					x: 7.45,
-					y: 4.7,
-					a: 0.3,
-					size: 16,
+					x: 8.2,
+					y: 2.8,
+					a: 1.4,
+					size: 25,
 					mirrorX: true
-				}, {
-					x: 6.82,
-					y: 2.65,
-					a: 4.8,
-					size: 16
 				}, {
 					x: 7.25,
 					y: 2,
 					a: 5.1,
+					size: 16
+				}, {
+					x: 6.82,
+					y: 2.65,
+					a: 4.8,
 					size: 16
 				}, {
 					x: 9.2,
@@ -105,28 +107,23 @@
 					size: 16,
 					mirrorX: true
 				}, {
+					x: 7.45,
+					y: 4.7,
+					a: 0.3,
+					size: 16,
+					mirrorX: true
+				}, {
 					x: 9.76,
 					y: 5.91,
 					a: 5.7,
 					size: 16
-				}, {
-					x: 8.2,
-					y: 2.8,
-					a: 1.4,
-					size: 25,
-					mirrorX: true
 				}],
+				//Branch 4
 				[{
-					x: 12.11,
-					y: 6,
-					a: 1.2,
-					size: 16,
-					mirrorX: true
-				}, {
-					x: 13.15,
-					y: 5.2,
-					a: 5.4,
-					size: 16
+					x: 15.1,
+					y: 4.1,
+					a: 6,
+					size: 25
 				}, {
 					x: 15.1,
 					y: 5.3,
@@ -140,17 +137,46 @@
 					size: 16,
 					mirrorX: true
 				}, {
+					x: 13.15,
+					y: 5.2,
+					a: 5.4,
+					size: 16
+				}, {
+					x: 12.11,
+					y: 6,
+					a: 1.2,
+					size: 16,
+					mirrorX: true
+				}, {
 					x: 12.75,
 					y: 8.05,
 					a: 0.3,
 					size: 16
-				}, {
-					x: 15.1,
-					y: 4.1,
-					a: 6,
-					size: 25
 				}],
+				//Branch 5
 				[{
+					x: 17.58,
+					y: 7,
+					a: 1.6,
+					size: 25,
+					mirrorX: true
+				}, {
+					x: 17.85,
+					y: 7.85,
+					a: .1,
+					size: 16
+				}, {
+					x: 17.58,
+					y: 8.25,
+					a: 1.2,
+					size: 16
+				}, {
+					x: 16.89,
+					y: 8.6,
+					a: 2.8,
+					size: 16,
+					mirrorX: true
+				}, {
 					x: 14.6,
 					y: 8.62,
 					a: 5.8,
@@ -161,34 +187,13 @@
 					a: 1.3,
 					size: 16,
 					mirrorX: true
-				}, {
-					x: 16.89,
-					y: 8.6,
-					a: 2.8,
-					size: 16,
-					mirrorX: true
-				}, {
-					x: 17.58,
-					y: 8.25,
-					a: 1.2,
-					size: 16
-				}, {
-					x: 17.85,
-					y: 7.85,
-					a: .1,
-					size: 16
-				}, {
-					x: 17.58,
-					y: 7,
-					a: 1.6,
-					size: 25,
-					mirrorX: true
 				}],
+				//Branch 6
 				[{
-					x: 15.6,
-					y: 11.4,
-					a: 2,
-					size: 16,
+					x: 18.2,
+					y: 12.1,
+					a: 2.7,
+					size: 25,
 					mirrorX: true
 				}, {
 					x: 16.79,
@@ -202,6 +207,12 @@
 					size: 16,
 					mirrorX: true
 				}, {
+					x: 15.6,
+					y: 11.4,
+					a: 2,
+					size: 16,
+					mirrorX: true
+				}, {
 					x: 14.9,
 					y: 12.72,
 					a: 1,
@@ -211,12 +222,6 @@
 					y: 12.8,
 					a: 1.5,
 					size: 16
-				}, {
-					x: 18.2,
-					y: 12.1,
-					a: 2.7,
-					size: 25,
-					mirrorX: true
 				// }],
 				// [{
 				// 	x: 4.22,
