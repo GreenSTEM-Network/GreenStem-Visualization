@@ -782,7 +782,9 @@
 			});
 
 			var initLeaf = function(leaf, branchIndex, isTest) {
-				if(!leaf.imgCfg) {
+				var branchEnabled = leaf.imgCfg;
+
+				if(!branchEnabled) {
 					leaf.imgCfg = {
 						normalSrc: 'resources/leaf-brown.svg', 
 						outlineSrc: 'resources/outlined-leaf-brown.svg', 
@@ -845,20 +847,22 @@
 						leaf.kineticImage.filters([Kinetic.Filters.Grayscale]);
 					}
 
-					leaf.imgCfg.outlineLeafImg.onload = function() {
-						leaf.kineticImage.on('mouseover', function() {
-							setNormalImageForSite(leaf.branchIndex);
-							branchOutlines[leaf.branchIndex].kineticImage.show();
-							text.setText(siteNames[branchIndex] ? siteNames[branchIndex] : '');
-							layer.draw();
-						});
+					if(branchEnabled) {
+						leaf.imgCfg.outlineLeafImg.onload = function() {
+							leaf.kineticImage.on('mouseover', function() {
+								setNormalImageForSite(leaf.branchIndex);
+								branchOutlines[leaf.branchIndex].kineticImage.show();
+								text.setText(siteNames[branchIndex] ? siteNames[branchIndex] : '');
+								layer.draw();
+							});
 
-						leaf.kineticImage.on('mouseout', function() {
-							setOutlineImageForSite(leaf.branchIndex);
-							branchOutlines[branchIndex].kineticImage.hide();
-							text.setText('');
-							layer.draw();
-						});
+							leaf.kineticImage.on('mouseout', function() {
+								setOutlineImageForSite(leaf.branchIndex);
+								branchOutlines[branchIndex].kineticImage.hide();
+								text.setText('');
+								layer.draw();
+							});
+						}
 					}
 
 					leaf.imgCfg.outlineLeafImg.src = leaf.imgCfg.outlineSrc;
