@@ -7,23 +7,24 @@
 			width: 1024,
 			height: 750,
 			scale: 20,
-			host: 'http://localhost:3000',
-			soilGrassImgSrc: 'resources/soil-grass.svg',
+			host: 'https://solarsunflower.herokuapp.com',
+			soilGrassImgSrc: 'img/soil-grass.svg',
 			treeWidth: 400,
 			treeHeight: 550,
 			treeGroundStartPct: 0.745,
 			treeGrassStartPct: 0.715,
-			cloudImgSrc: ['resources/cloud1.svg', 'resources/cloud2.svg', 'resources/cloud3.svg'],
+			cloudImgSrc: ['img/cloud1.svg', 'img/cloud2.svg', 'img/cloud3.svg'],
 			cloudCount: 6,
 			cloudSpeedDivisor: 15,
 			cloudMinX: 0,
 			cloudMaxX: 300,
 			cloudMinY: 0,
 			cloudMaxY: 150,
-			sunImgSrc: 'resources/sun.svg',
+			sunImgSrc: 'img/sun.svg',
 			sunWidth: 300,
 			sunHeight: 125,
 			idealVoltage: 3200,
+			textMargin: 5,
 			branches: [
 				//Branch 1
 				[{
@@ -482,7 +483,7 @@
 				b2Vec2 = Box2D.Common.Math.b2Vec2,
 				b2DebugDraw = Box2D.Dynamics.b2DebugDraw,
 				branchOutlines = [],
-				siteNames = [],
+				siteData = [],
 				cloudLayers = [],
 				jointDef,
 				DEGTORAD;
@@ -497,7 +498,7 @@
 				height: settings.treeHeight
 			});
 
-			settings.treeImg = 'resources/tree-' + branches.length + 'branches.svg';
+			settings.treeImg = 'img/tree-' + branches.length + 'branches.svg';
 			settings.cloudSpeed = settings.gravityY / settings.cloudSpeedDivisor;
 
 			Date.prototype.format = function(format) //author: meizz
@@ -523,11 +524,11 @@
 
 			var convertStatusNameToImgCfg = function(statusName) {
 				if (statusName == 'GREEN') {
-					return {normalSrc: 'resources/leaf-green.svg', outlineSrc: 'resources/outlined-leaf-green.svg'};
+					return {normalSrc: 'img/leaf-green.svg', outlineSrc: 'img/outlined-leaf-green.svg'};
 				} else if (statusName == 'YELLOW') {
-					return {normalSrc: 'resources/leaf-yellow.svg', outlineSrc: 'resources/outlined-leaf-yellow.svg'};
+					return {normalSrc: 'img/leaf-yellow.svg', outlineSrc: 'img/outlined-leaf-yellow.svg'};
 				} else if (statusName == 'RED') {
-					return {normalSrc: 'resources/leaf-red.svg', outlineSrc: 'resources/outlined-leaf-red.svg'};
+					return {normalSrc: 'img/leaf-red.svg', outlineSrc: 'img/outlined-leaf-red.svg'};
 				} 
 			}
 
@@ -671,7 +672,12 @@
 						siteName = value.site_name,
 						statusNames = value.status_names;
 
-					siteNames[dataIndex] = siteName;
+					siteData[dataIndex] = {
+						name: siteName,
+						readings: [ value.soil1, value.soil2, value.soil3 ],
+						temp: value.temp,
+						voltage: value.voltage
+					};
 
 					branches[dataIndex][0].imgCfg = convertStatusNameToImgCfg(value.average_status_name);
 					//Set Sensor 1, Sensor 2 and Sensor 3 Reading
@@ -808,7 +814,7 @@
 						image: new Image
 					}
 
-					branchOutlines[i].image.src = 'resources/outline-branch' + (i + 1) + '.svg';
+					branchOutlines[i].image.src = 'img/outline-branch' + (i + 1) + '.svg';
 
 					branchOutlines[i].kineticImage = new Kinetic.Image({
 						x: 0,
@@ -836,34 +842,33 @@
 			};
 
 			var text = {sensor: []};
-
-			text.site = new Kinetic.Text({
-					x: 10,
-					y: 10 + settings.treeHeight,
+			var createText = function(y) {
+				return new Kinetic.Text({
+					x: settings.textMargin,
+					y: y + settings.textMargin + settings.treeHeight,
 					fontFamily: 'Calibri',
 					fontSize: 24,
 					text: '',
 					fill: 'black'
 				});
+			};
+
+			text.site = createText(0);
 
 			for(i = 0; i < 3; i++) {
-				text.sensor[i] = new Kinetic.Text({
-					x: 10,
-					y: text.site.height() + settings.treeHeight + 5,
-					fontFamily: 'Calibri',
-					fontSize: 24,
-					text: '',
-					fill: 'black'
-				});
-			}
+				text.sensor[i] = createText((text.site.height() * (i + 1)));
+			}			
+			text.voltage = createText(text.site.height() * 4);
+			text.temp = createText(text.site.height() * 5);
+			
 
 			var initLeaf = function(leaf, branchIndex, isTest) {
 				var branchEnabled = leaf.imgCfg;
 
 				if(!branchEnabled) {
 					leaf.imgCfg = {
-						normalSrc: 'resources/leaf-gray-75.svg', 
-						outlineSrc: 'resources/leaf-gray-75.svg',
+						normalSrc: 'img/leaf-gray-75.svg', 
+						outlineSrc: 'img/leaf-gray-75.svg',
 						disabled: true
 					};
 				}
@@ -917,20 +922,21 @@
 					// add the shape to the layer
 					leafLayer.add(leaf.kineticImage);
 
-					// if(leaf.imgCfg.disabled) {
-					// 	leaf.kineticImage.cache();
-					// 	leaf.kineticImage.filters([Kinetic.Filters.Grayscale]);
-					// }
-
 					if(branchEnabled) {
 						leaf.imgCfg.outlineLeafImg.onload = function() {
 							leaf.kineticImage.on('mouseover', function() {
 								setOutlineImageForSite(leaf.branchIndex);
 								branchOutlines[leaf.branchIndex].kineticImage.show();
-								text.site.setText(siteNames[branchIndex] ? siteNames[branchIndex] : '');
+								text.site.setText(siteData[branchIndex].name ? siteData[branchIndex].name : '');
 								for(i = 0; i < 3; i++) {
-									text.sensor[i].setText
+									text.sensor[i].setText('Soil Sensor ' + (i + 1) + ': ' + siteData[branchIndex].readings[i]);
 								}
+								text.voltage.setText(siteData[branchIndex].voltage ?
+									'Voltage: ' + siteData[branchIndex].voltage :
+									'');
+								text.temp.setText(siteData[branchIndex].temp ? 
+									'Temp: ' + siteData[branchIndex].temp :
+									'');
 								leafLayer.draw();
 								overlayLayer.draw();
 								textLayer.show();
@@ -960,6 +966,8 @@
 			for(i = 0; i < 3; i++) {
 				textLayer.add(text.sensor[i]);
 			}
+			textLayer.add(text.voltage);
+			textLayer.add(text.temp);
 			textLayer.hide();
 
 			stage.add(bgLayer);
