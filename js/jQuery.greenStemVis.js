@@ -3,13 +3,27 @@
 	var pluginName = "greenStemVis",
 		defaults = {
 			gravityX: 3,
-			gravityY: 30,
+			gravityY: 25,
 			width: 1024,
 			height: 750,
 			scale: 20,
-			host: 'https://solarsunflower.herokuapp.com',
+			host: 'http://localhost:3000',
+			soilGrassImgSrc: 'resources/soil-grass.svg',
 			treeWidth: 400,
 			treeHeight: 550,
+			treeGroundStartPct: 0.745,
+			treeGrassStartPct: 0.715,
+			cloudImgSrc: ['resources/cloud1.svg', 'resources/cloud2.svg', 'resources/cloud3.svg'],
+			cloudCount: 6,
+			cloudSpeedDivisor: 15,
+			cloudMinX: 0,
+			cloudMaxX: 300,
+			cloudMinY: 0,
+			cloudMaxY: 150,
+			sunImgSrc: 'resources/sun.svg',
+			sunWidth: 300,
+			sunHeight: 125,
+			idealVoltage: 3200,
 			branches: [
 				//Branch 1
 				[{
@@ -450,6 +464,10 @@
 					container: me.element
 				}),
 				layer = new Kinetic.Layer(),
+				bgLayer = new Kinetic.Layer(),
+				overlayLayer = new Kinetic.Layer(),
+				leafLayer = new Kinetic.Layer(),
+				textLayer = new Kinetic.Layer(),
 				$element = $(me.element),
 				canvas = layer.getCanvas(),
 				testLeaf = false,
@@ -465,10 +483,22 @@
 				b2DebugDraw = Box2D.Dynamics.b2DebugDraw,
 				branchOutlines = [],
 				siteNames = [],
+				cloudLayers = [],
 				jointDef,
 				DEGTORAD;
 
+			cloudLayers[0] = new Kinetic.Layer();
+			cloudLayers[1] = new Kinetic.Layer();
+
+			bgLayer.clip({
+				x: 0,
+				y: 0,
+				width: settings.treeWidth,
+				height: settings.treeHeight
+			});
+
 			settings.treeImg = 'resources/tree-' + branches.length + 'branches.svg';
+			settings.cloudSpeed = settings.gravityY / settings.cloudSpeedDivisor;
 
 			Date.prototype.format = function(format) //author: meizz
 			{
@@ -501,34 +531,6 @@
 				} 
 			}
 
-			$.getJSON(settings.host + "/public/summary.json", function(data) {
-				$.each(data.readings, function(dataIndex, value) {
-					var dateStr = new Date(value.collection_time).format("yyyy-MM-dd h:mm:ss"),
-						siteName = value.site_name,
-						statusNames = value.status_names;
-					console.log('dataIndex', dataIndex);
-					siteNames[dataIndex] = siteName;
-
-					//Set Average Reading TODO Hook up to status property once implemented
-					branches[dataIndex][0].imgCfg = convertStatusNameToImgCfg('GREEN');
-					//Set Sensor 1, Sensor 2 and Sensor 3 Reading
-					branches[dataIndex][1].imgCfg = convertStatusNameToImgCfg(statusNames[0]);
-					branches[dataIndex][2].imgCfg = convertStatusNameToImgCfg(statusNames[1]);
-					branches[dataIndex][3].imgCfg = convertStatusNameToImgCfg(statusNames[2]);
-					//Set Voltage Reading
-					branches[dataIndex][4].imgCfg = convertStatusNameToImgCfg(value.voltage);
-					//Set Temp Reading
-					branches[dataIndex][5].imgCfg = convertStatusNameToImgCfg(value.temp);
-				});
-
-				for (var i = 0; i < branches.length; i++) {
-					console.log('init', i);
-					for (var j = 0; j < branches[i].length; j++) {
-						initLeaf(branches[i][j], i);
-					}
-				}
-			});
-
 			var Physics = window.Physics = function(element, scale) {
 				var me = this,
 					gravity = new b2Vec2(settings.gravityX, settings.gravityY);
@@ -539,6 +541,11 @@
 
 				me.dtRemaining = 0;
 				me.stepAmount = 1 / 60;
+			};
+
+			Physics.prototype.setGravity = function(x, y) {
+				var gravity = new b2Vec2(settings.gravityX, settings.gravityY);
+				this.world.SetGravity(gravity);
 			};
 
 			Physics.prototype.debug = function() {
@@ -563,17 +570,6 @@
 				if (this.debugDraw) {
 					this.world.DrawDebugData();
 				}
-				// console.log(i);
-				// if (i > 100) {
-				// 	var newGravity = Math.floor((Math.random() * 20) + 1);
-				// 	newGravity = newGravity - Math.floor((Math.random() * 10) + 1);
-				// 	this.world.SetGravity(new b2Vec2(newGravity, 0));
-				// 	i = 0;
-				// }
-				// else if ( i >= 50) {
-				// 	this.world.SetGravity(new b2Vec2(0, 0));	
-				// }
-				// i++;
 			}
 
 
@@ -632,62 +628,6 @@
 				fixDef = new b2FixtureDef(),
 				jointDef = new b2JointDef();
 
-			// var FlexJoint = function(joint, multiplier) {
-			// 	joint_angle = joint.GetJointAngle() * (180 / 3.14);
-			// 	if (Math.abs(joint_angle) > 0.2) {
-			// 		joint.SetMaxMotorTorque(multiplier * Math.abs(joint_angle / 30));
-			// 		joint.SetMotorSpeed(-joint_angle / 30);
-			// 	}
-			// }
-
-			// var TreeJoint = function(bodyA, bodyB) {
-			// 	var DEGTORAD = 3.14 / 180,
-			// 		jointDef = new Box2D.Dynamics.Joints.b2RevoluteJointDef();
-
-			// 	jointDef.bodyA = bodyA;
-			// 	jointDef.bodyB = bodyB;
-			// 	jointDef.localAnchorA.Set(0, -1);
-			// 	if (bodyA == ground) {
-			// 		jointDef.localAnchorA.Set(0, -2);
-			// 	}
-			// 	jointDef.localAnchorB.Set(0, 1);
-			// 	jointDef.enableLimit = true;
-			// 	jointDef.lowerAngle = -30 * DEGTORAD;
-			// 	jointDef.upperAngle = 30 * DEGTORAD;
-			// 	jointDef.enableMotor = true;
-			// 	return physics.world.CreateJoint(jointDef);
-			// }
-
-			// var FixedRectangle = function(x, y, width, height) {
-			// 	var rect;
-
-			// 	bodyDef.type = b2Body.b2_staticBody;
-			// 	fixDef.shape = new b2PolygonShape();
-			// 	fixDef.shape.SetAsBox(width, height);
-			// 	bodyDef.position.Set(x, y);
-			// 	rect = physics.world.CreateBody(bodyDef);
-			// 	rect.CreateFixture(fixDef);
-
-			// 	return rect;
-			// }
-
-			// var TreeTrunk = function(x, y) {
-			// 	bodyDef.type = b2Body.b2_dynamicBody;
-			// 	fixDef.shape = new b2PolygonShape();
-			// 	fixDef.shape.SetAsBox(0.25, 1);
-			// 	bodyDef.position.Set(x, y);
-			// 	trunk = physics.world.CreateBody(bodyDef);
-			// 	trunk.CreateFixture(fixDef);
-			// 	return trunk;
-			// }
-
-			// Body.prototype.defaults = {
-			// 	shape: "block",
-			// 	width: 2,
-			// 	height: 2,
-			// 	radius: 1
-			// };
-
 			Body.prototype.defaults = {
 				shape: "line",
 				width: 0.5,
@@ -717,14 +657,42 @@
 
 			physics = window.physics = new Physics(canvas);
 
-			physics.debug();
-
 			var tree = new Body(physics, {
 				type: 'static',
 				x: settings.treeWidth / 2 / settings.scale,
 				y: 1,
 				width: .1,
 				height: 1
+			});
+
+			$.getJSON(settings.host + "/public/summary.json", function(data) {
+				$.each(data.readings, function(dataIndex, value) {
+					var dateStr = new Date(value.collection_time).format("yyyy-MM-dd h:mm:ss"),
+						siteName = value.site_name,
+						statusNames = value.status_names;
+
+					siteNames[dataIndex] = siteName;
+
+					branches[dataIndex][0].imgCfg = convertStatusNameToImgCfg(value.average_status_name);
+					//Set Sensor 1, Sensor 2 and Sensor 3 Reading
+					branches[dataIndex][1].imgCfg = convertStatusNameToImgCfg(statusNames[0]);
+					branches[dataIndex][2].imgCfg = convertStatusNameToImgCfg(statusNames[1]);
+					branches[dataIndex][3].imgCfg = convertStatusNameToImgCfg(statusNames[2]);
+					//Set Voltage Reading
+					branches[dataIndex][4].imgCfg = convertStatusNameToImgCfg(value.voltage < settings.idealVoltage ? 'RED' : 'GREEN');
+					//Set Temp Reading
+					branches[dataIndex][5].imgCfg = convertStatusNameToImgCfg(value.temp ? 'GREEN' : 'RED');
+				});
+
+				for (var i = 0; i < branches.length; i++) {
+					for (var j = 0; j < branches[i].length; j++) {
+						initLeaf(branches[i][j], i);
+					}
+				}
+
+				settings.gravityY = data.weather[0].currently.windSpeed * 2;
+				physics.setGravity(settings.gravityX, settings.gravityY );
+				settings.cloudSpeed = settings.gravityY / settings.cloudSpeedDivisor;
 			});
 			
 			var initTree = function() {
@@ -737,9 +705,99 @@
 						width: settings.treeWidth,
 						height: settings.treeHeight,
 						image: treeImage
-					}))
+					}));
+
+					layer.draw();
 				}
 				treeImage.src = settings.treeImg;
+			};
+
+			var initSky = function() {
+				var clouds = [], i = 0,
+					skyGradient = new Kinetic.Rect({
+						x: 0,
+						y: 0,
+						width: settings.treeWidth,
+						height: settings.treeHeight * settings.treeGroundStartPct,
+						fillLinearGradientStartPoint: {x:0, y:0},
+			          	fillLinearGradientEndPoint: {x:0,y:200},
+			          	fillLinearGradientColorStops: [0, '#92c8e7', 1, '#e3eaf6']
+					}),
+					sunImg = new Image;
+
+				var initCloud = function(cloud, i, cloudLayer) {
+					cloud.img.onload = function() {
+						cloud.KineticImage = new Kinetic.Image({
+							x: (Math.random() * settings.cloudMaxX) + settings.cloudMinX,
+							y: (Math.random() * settings.cloudMaxY) + settings.cloudMinY,
+							width: 150,
+							height: 50,
+							image: cloud.img
+						});
+						cloudLayer.add(cloud.KineticImage);
+					}
+				}
+
+				for(; i < settings.cloudCount; i++) {
+					for(var j = 0; j < 2; j++) {
+						var cloudSrcIndex = Math.floor((Math.random() * 3));
+
+						clouds[i] = { img: new Image };
+						initCloud(clouds[i], i, cloudLayers[j]);
+						clouds[i].img.src = settings.cloudImgSrc[cloudSrcIndex];
+					}
+				}
+
+				cloudLayers[1].move({
+					x: settings.treeWidth * -1,
+					y: 0
+				})
+
+				sunImg.onload = function() {
+					bgLayer.add(new Kinetic.Image({
+						x: settings.treeWidth - settings.sunWidth + 25,
+						y: 0,
+						width: settings.sunWidth,
+						height: settings.sunHeight,
+						image: sunImg
+					}))
+
+					bgLayer.draw();
+				}
+
+				sunImg.src = settings.sunImgSrc;
+
+				bgLayer.add(skyGradient);
+			};
+
+			var initGround = function() {
+				var groundGradient = new Kinetic.Rect({
+		          x: 0,
+		          y: settings.treeHeight * settings.treeGroundStartPct,
+		          width: settings.treeWidth,
+		          height: 125,
+		          fillLinearGradientStartPoint: {x:0, y:0},
+		          fillLinearGradientEndPoint: {x:0, y:100},
+		          fillLinearGradientColorStops: [0, '#604526', 1, '#9c7644']
+		        });
+
+				var soilGrassImg = new Image;
+				soilGrassImg.onload = function() {
+		        	var groundGrassSpecs = new Kinetic.Image({
+	        			x: 0,
+		          		y: settings.treeHeight * settings.treeGrassStartPct,
+			        	width: settings.treeWidth,
+			        	height: 145,
+			         	image: soilGrassImg
+			         });
+
+		        	bgLayer.add(groundGrassSpecs);
+		        	bgLayer.draw();
+		        };
+
+				soilGrassImg.src = settings.soilGrassImgSrc;
+
+		        bgLayer.add(groundGradient);
 			};
 
 			var initBranchOutlines = function() {
@@ -761,7 +819,7 @@
 						visible: false
 					});
 
-					layer.add(branchOutlines[i].kineticImage);
+					overlayLayer.add(branchOutlines[i].kineticImage);
 				}
 			};
 
@@ -773,26 +831,39 @@
 
 			var setOutlineImageForSite = function(branchIndex) {
 				for (var i = 0; i < branches[branchIndex].length; i++) {
-					branches[branchIndex][i].kineticImage.setImage(branches[branchIndex][i].imgCfg.outlineImg);
+					branches[branchIndex][i].kineticImage.setImage(branches[branchIndex][i].imgCfg.outlineLeafImg);
 				}
 			};
 
-			var text = new Kinetic.Text({
-				x: 10,
-				y: 10 + settings.treeHeight,
-				fontFamily: 'Calibri',
-				fontSize: 24,
-				text: '',
-				fill: 'black'
-			});
+			var text = {sensor: []};
+
+			text.site = new Kinetic.Text({
+					x: 10,
+					y: 10 + settings.treeHeight,
+					fontFamily: 'Calibri',
+					fontSize: 24,
+					text: '',
+					fill: 'black'
+				});
+
+			for(i = 0; i < 3; i++) {
+				text.sensor[i] = new Kinetic.Text({
+					x: 10,
+					y: text.site.height() + settings.treeHeight + 5,
+					fontFamily: 'Calibri',
+					fontSize: 24,
+					text: '',
+					fill: 'black'
+				});
+			}
 
 			var initLeaf = function(leaf, branchIndex, isTest) {
 				var branchEnabled = leaf.imgCfg;
 
 				if(!branchEnabled) {
 					leaf.imgCfg = {
-						normalSrc: 'resources/leaf-brown.svg', 
-						outlineSrc: 'resources/outlined-leaf-brown.svg', 
+						normalSrc: 'resources/leaf-gray-75.svg', 
+						outlineSrc: 'resources/leaf-gray-75.svg',
 						disabled: true
 					};
 				}
@@ -828,6 +899,7 @@
 					if (leaf.kineticImage) {
 						leaf.kineticImage.destroy();
 					}
+
 					leaf.kineticImage = new Kinetic.Image({
 						x: leaf.x * settings.scale,
 						y: leaf.y * settings.scale,
@@ -843,29 +915,34 @@
 					leaf.kineticImage.rotate(leaf.a * (180 / Math.PI));
 
 					// add the shape to the layer
-					layer.add(leaf.kineticImage);
+					leafLayer.add(leaf.kineticImage);
 
-					stage.add(layer);
-
-					if(leaf.imgCfg.disabled) {
-						leaf.kineticImage.cache();
-						leaf.kineticImage.filters([Kinetic.Filters.Grayscale]);
-					}
+					// if(leaf.imgCfg.disabled) {
+					// 	leaf.kineticImage.cache();
+					// 	leaf.kineticImage.filters([Kinetic.Filters.Grayscale]);
+					// }
 
 					if(branchEnabled) {
 						leaf.imgCfg.outlineLeafImg.onload = function() {
 							leaf.kineticImage.on('mouseover', function() {
-								setNormalImageForSite(leaf.branchIndex);
+								setOutlineImageForSite(leaf.branchIndex);
 								branchOutlines[leaf.branchIndex].kineticImage.show();
-								text.setText(siteNames[branchIndex] ? siteNames[branchIndex] : '');
-								layer.draw();
+								text.site.setText(siteNames[branchIndex] ? siteNames[branchIndex] : '');
+								for(i = 0; i < 3; i++) {
+									text.sensor[i].setText
+								}
+								leafLayer.draw();
+								overlayLayer.draw();
+								textLayer.show();
+								textLayer.draw();
 							});
 
 							leaf.kineticImage.on('mouseout', function() {
-								setOutlineImageForSite(leaf.branchIndex);
+								setNormalImageForSite(leaf.branchIndex);
 								branchOutlines[branchIndex].kineticImage.hide();
-								text.setText('');
-								layer.draw();
+								textLayer.hide();
+								leafLayer.draw();
+								overlayLayer.draw();
 							});
 						}
 					}
@@ -879,7 +956,19 @@
 			initTree();
 			initBranchOutlines();
 
-			layer.add(text);
+			textLayer.add(text.site);
+			for(i = 0; i < 3; i++) {
+				textLayer.add(text.sensor[i]);
+			}
+			textLayer.hide();
+
+			stage.add(bgLayer);
+			stage.add(cloudLayers[0]);
+			stage.add(cloudLayers[1]);
+			stage.add(layer);
+			stage.add(overlayLayer);
+			stage.add(leafLayer);
+			stage.add(textLayer);
 
 			if (testLeaf) {
 				testLeaf = {
@@ -926,9 +1015,40 @@
 				}
 			}
 
+			var animateCloudLayer = function(cloudLayer, dt) {
+				var cloudX = cloudLayer.getPosition().x;
+
+				cloudLayer.move({
+					x: 1 * settings.cloudSpeed,
+					y: 0
+				});
+				if(cloudX >= settings.treeWidth) {
+					cloudX = settings.treeWidth * -2.5;
+					cloudLayer.move({
+						x: cloudX,
+						y: 0
+					});
+				}
+
+				if((Math.floor(settings.treeWidth - cloudX) - 1) > 0) {
+					cloudLayer.clip({
+						x: 0,
+						y: 0,
+						width: Math.floor(settings.treeWidth - cloudX) - 1,
+						height: settings.treeHeight
+					});
+				}
+
+				cloudLayer.draw();
+			}
+
 			$('#controls').find('input').change(function() {
 				initLeaf(testLeaf, true);
 			});
+
+			initGround();
+			initSky();
+			layer.draw();
 
 			window.gameLoop = function() {
 				var ctx = physics.context;
@@ -958,8 +1078,11 @@
 
 					animateLeaf(testLeaf, ctx);
 				}
+				for(i = 0; i < 2; i++) {
+					animateCloudLayer(cloudLayers[i], dt);
+				}
 
-				layer.draw();
+				leafLayer.draw();
 
 				requestAnimationFrame(gameLoop);
 			};
