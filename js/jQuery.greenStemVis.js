@@ -4,8 +4,6 @@
 		defaults = {
 			gravityX: 3,
 			gravityY: 25,
-			width: 1024,
-			height: 750,
 			scale: 20,
 			host: 'https://solarsunflower.herokuapp.com',
 			soilGrassImgSrc: 'img/soil-grass.svg',
@@ -13,18 +11,20 @@
 			treeHeight: 550,
 			treeGroundStartPct: 0.745,
 			treeGrassStartPct: 0.715,
+			soilHeight: 145,
+			soilWidth: 290,
 			cloudImgSrc: ['img/cloud1.svg', 'img/cloud2.svg', 'img/cloud3.svg'],
-			cloudCount: 6,
-			cloudSpeedDivisor: 15,
+			cloudCount: 12,
+			cloudSpeedDivisor: 60,
 			cloudMinX: 0,
-			cloudMaxX: 300,
 			cloudMinY: 0,
-			cloudMaxY: 150,
+			cloudMaxYPct: 0.35,
 			sunImgSrc: 'img/sun.svg',
 			sunWidth: 300,
 			sunHeight: 125,
 			idealVoltage: 3200,
 			textMargin: 5,
+			textWidth: 400,
 			branches: [
 				//Branch 1
 				[{
@@ -458,18 +458,13 @@
 	GreenStemVis.prototype = {
 		init: function() {
 			var me = this,
+				$element = $(me.element),
 				settings = me.settings,
-				stage = new Kinetic.Stage({
-					width: settings.width,
-					height: settings.height,
-					container: me.element
-				}),
 				layer = new Kinetic.Layer(),
 				bgLayer = new Kinetic.Layer(),
 				overlayLayer = new Kinetic.Layer(),
 				leafLayer = new Kinetic.Layer(),
 				textLayer = new Kinetic.Layer(),
-				$element = $(me.element),
 				canvas = layer.getCanvas(),
 				testLeaf = false,
 				branches = settings.branches,
@@ -488,14 +483,23 @@
 				jointDef,
 				DEGTORAD;
 
+			settings.width = $element.width();
+			settings.height = (settings.width * 0.75);
+
+			stage = new Kinetic.Stage({
+				width: settings.width,
+				height: settings.height,
+				container: me.element
+			});
+
 			cloudLayers[0] = new Kinetic.Layer();
 			cloudLayers[1] = new Kinetic.Layer();
 
 			bgLayer.clip({
 				x: 0,
 				y: 0,
-				width: settings.treeWidth,
-				height: settings.treeHeight
+				width: settings.width,
+				height: settings.height
 			});
 
 			settings.treeImg = 'img/tree-' + branches.length + 'branches.svg';
@@ -701,13 +705,16 @@
 				settings.cloudSpeed = settings.gravityY / settings.cloudSpeedDivisor;
 			});
 			
+			settings.treeStartX = 50;
+			settings.treeStartY = settings.height * settings.treeGrassStartPct - (settings.treeHeight * settings.treeGrassStartPct);
+
 			var initTree = function() {
 				var treeImage = new Image;
 
 				treeImage.onload = function() {
 					layer.add(new Kinetic.Image({
-						x: 0,
-						y: -13,
+						x: settings.treeStartX,
+						y: settings.treeStartY - 13,
 						width: settings.treeWidth,
 						height: settings.treeHeight,
 						image: treeImage
@@ -723,8 +730,8 @@
 					skyGradient = new Kinetic.Rect({
 						x: 0,
 						y: 0,
-						width: settings.treeWidth,
-						height: settings.treeHeight * settings.treeGroundStartPct,
+						width: settings.width,
+						height: settings.height * settings.treeGroundStartPct,
 						fillLinearGradientStartPoint: {x:0, y:0},
 			          	fillLinearGradientEndPoint: {x:0,y:200},
 			          	fillLinearGradientColorStops: [0, '#92c8e7', 1, '#e3eaf6']
@@ -734,8 +741,10 @@
 				var initCloud = function(cloud, i, cloudLayer) {
 					cloud.img.onload = function() {
 						cloud.KineticImage = new Kinetic.Image({
-							x: (Math.random() * settings.cloudMaxX) + settings.cloudMinX,
-							y: (Math.random() * settings.cloudMaxY) + settings.cloudMinY,
+							x: Math.min(
+								settings.width - 150 ,
+								((Math.random() * settings.width) + settings.cloudMinX)),
+							y: ((Math.random() * (settings.height * settings.cloudMaxYPct)) + settings.cloudMinY),
 							width: 150,
 							height: 50,
 							image: cloud.img
@@ -755,13 +764,13 @@
 				}
 
 				cloudLayers[1].move({
-					x: settings.treeWidth * -1,
+					x: settings.width * -1,
 					y: 0
 				})
 
 				sunImg.onload = function() {
 					bgLayer.add(new Kinetic.Image({
-						x: settings.treeWidth - settings.sunWidth + 25,
+						x: settings.width - settings.sunWidth + 25,
 						y: 0,
 						width: settings.sunWidth,
 						height: settings.sunHeight,
@@ -777,33 +786,23 @@
 			};
 
 			var initGround = function() {
-				var groundGradient = new Kinetic.Rect({
-		          x: 0,
-		          y: settings.treeHeight * settings.treeGroundStartPct,
-		          width: settings.treeWidth,
-		          height: 125,
-		          fillLinearGradientStartPoint: {x:0, y:0},
-		          fillLinearGradientEndPoint: {x:0, y:100},
-		          fillLinearGradientColorStops: [0, '#604526', 1, '#9c7644']
-		        });
-
 				var soilGrassImg = new Image;
 				soilGrassImg.onload = function() {
-		        	var groundGrassSpecs = new Kinetic.Image({
-	        			x: 0,
-		          		y: settings.treeHeight * settings.treeGrassStartPct,
-			        	width: settings.treeWidth,
-			        	height: 145,
-			         	image: soilGrassImg
-			         });
-
-		        	bgLayer.add(groundGrassSpecs);
+		        	for(i = 0; i < settings.width; i = (i + settings.soilWidth - 1)) {
+			        	bgLayer.add(new Kinetic.Image({
+		        			x: i,
+			          		y: settings.height * settings.treeGrassStartPct,
+				        	width: settings.soilWidth,
+				        	height: settings.soilHeight,
+				         	image: soilGrassImg
+				         }));
+			        }
 		        	bgLayer.draw();
 		        };
 
 				soilGrassImg.src = settings.soilGrassImgSrc;
 
-		        bgLayer.add(groundGradient);
+		        // bgLayer.add(groundGradient);
 			};
 
 			var initBranchOutlines = function() {
@@ -817,8 +816,8 @@
 					branchOutlines[i].image.src = 'img/outline-branch' + (i + 1) + '.svg';
 
 					branchOutlines[i].kineticImage = new Kinetic.Image({
-						x: 0,
-						y: -13,
+						x: 0 + settings.treeStartX,
+						y: -13 + settings.treeStartY,
 						width: settings.treeWidth,
 						height: settings.treeHeight,
 						image: branchOutlines[i].image,
@@ -844,10 +843,10 @@
 			var text = {sensor: []};
 			var createText = function(y) {
 				return new Kinetic.Text({
-					x: settings.textMargin,
-					y: y + settings.textMargin + settings.treeHeight,
-					fontFamily: 'Calibri',
-					fontSize: 24,
+					x: settings.treeStartX + settings.treeWidth + settings.textMargin,
+					y: y + settings.textMargin + settings.treeStartY + (settings.treeHeight / 3),
+					fontFamily: 'Open Sans',
+					fontSize: 20,
 					text: '',
 					fill: 'black'
 				});
@@ -867,7 +866,7 @@
 
 				if(!branchEnabled) {
 					leaf.imgCfg = {
-						normalSrc: 'img/leaf-gray-75.svg', 
+						normalSrc: 'img/leaf-gray-75.svg',
 						outlineSrc: 'img/leaf-gray-75.svg',
 						disabled: true
 					};
@@ -906,8 +905,8 @@
 					}
 
 					leaf.kineticImage = new Kinetic.Image({
-						x: leaf.x * settings.scale,
-						y: leaf.y * settings.scale,
+						x: (leaf.x * settings.scale) + settings.treeStartX,
+						y: (leaf.y * settings.scale) + settings.treeStartY,
 						width: leaf.size,
 						height: leaf.size,
 						image: leaf.imgCfg.normalImg,
@@ -1030,20 +1029,20 @@
 					x: 1 * settings.cloudSpeed,
 					y: 0
 				});
-				if(cloudX >= settings.treeWidth) {
-					cloudX = settings.treeWidth * -2.5;
+				if(cloudX >= settings.width) {
+					cloudX = settings.width * -2.5;
 					cloudLayer.move({
 						x: cloudX,
 						y: 0
 					});
 				}
 
-				if((Math.floor(settings.treeWidth - cloudX) - 1) > 0) {
+				if((Math.floor(settings.width - cloudX) - 1) > 0) {
 					cloudLayer.clip({
 						x: 0,
 						y: 0,
-						width: Math.floor(settings.treeWidth - cloudX) - 1,
-						height: settings.treeHeight
+						width: Math.floor(settings.width - cloudX) - 1,
+						height: settings.height
 					});
 				}
 
