@@ -1,0 +1,41 @@
+.entry-content {
+     margin-top: 0;
+}
+
+.entry-content p:first-child {
+     display: none;
+}
+
+.key {
+     border: 1px solid #000;
+     float: right;
+     margin: 1em 0 1em 2em;
+     padding: .75em 2em; 
+}
+
+.key h3 {
+     margin: 0 0 .5em;
+}
+
+.key ul {
+     margin: 0;
+}
+
+.key li {
+     display: block;
+     margin-bottom: .5em;
+     overflow: hidden;
+}
+
+.key img.leaf {
+     float: left;
+     margin-right: 10px;
+     vertical-align: middle;
+     height: 30px;   
+     width: 30px;
+}
+
+.key li p {
+     line-height: 1.25em;
+     margin: 0;
+}

@@ -1,50 +1,1 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- Generator: Adobe Illustrator 17.1.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
-<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-	 viewBox="0 0 200 60" enable-background="new 0 0 200 60" xml:space="preserve">
-<symbol  id="Cloud_3" viewBox="-24.91 -7.819 49.82 15.704">
-	<g>
-		<defs>
-			<filter id="Adobe_OpacityMaskFilter" filterUnits="userSpaceOnUse" x="-24.91" y="-7.885" width="49.82" height="15.704">
-				<feFlood  style="flood-color:white;flood-opacity:1" result="back"/>
-				<feBlend  in="SourceGraphic" in2="back" mode="normal"/>
-			</filter>
-		</defs>
-		<mask maskUnits="userSpaceOnUse" x="-24.91" y="-7.885" width="49.82" height="15.704" id="SVGID_1_">
-			<g filter="url(#Adobe_OpacityMaskFilter)">
-				
-					<image overflow="visible" width="54" height="20" xlink:href="data:image/jpeg;base64,/9j/4AAQSkZJRgABAgEASABIAAD/7AARRHVja3kAAQAEAAAAHgAA/+4AIUFkb2JlAGTAAAAAAQMA
-EAMCAwYAAAGxAAAB+wAAAqr/2wCEABALCwsMCxAMDBAXDw0PFxsUEBAUGx8XFxcXFx8eFxoaGhoX
-Hh4jJSclIx4vLzMzLy9AQEBAQEBAQEBAQEBAQEABEQ8PERMRFRISFRQRFBEUGhQWFhQaJhoaHBoa
-JjAjHh4eHiMwKy4nJycuKzU1MDA1NUBAP0BAQEBAQEBAQEBAQP/CABEIABQANgMBIgACEQEDEQH/
-xACPAAEAAgIDAAAAAAAAAAAAAAAABAUGBwECAwEBAAAAAAAAAAAAAAAAAAAAABAAAAUCBQUAAAAA
-AAAAAAAAAgMEBQYBFhAwERITIxQkFQcRAAECAwUGAwkAAAAAAAAAAAERAgAhEzESAwQUEEFhcYGR
-MkIFobFSgqJDwyQVEgEAAAAAAAAAAAAAAAAAAAAw/9oADAMBAAIRAxEAAADX65zgrPLYfBobru3E
-TAE0etoESOEGcFeD/9oACAECAAEFAMj/2gAIAQMAAQUAyP/aAAgBAQABBQDBh+fp1SKQwAKRMIo0
-IcGCPGPA2aBNiUoNSCAVOTjoaFiNrJoYiEMTYYFa1+70pfOi669pFw7vK7g+4ODrcv8A/9oACAEC
-AgY/AA//2gAIAQMCBj8AD//aAAgBAQEGPwDYzMZ9xv4gUBpIAB5Qcz6c4upglzDNR1gPcxzWO8Li
-CAeR2lX08MSB3kx++G5rEJJUiSbhDWAtYxoRoUCUEF7SDaFEUH0SfhlAzPp+I3BXxMtaYbky9t55
-ID90gsH+bURZ3Et6xLUfTA1epRZIv44NHUqhVbyJ80fc1K8aip3hlbUUvLb7Un3jzVV43l98f//Z" transform="matrix(1 0 0 -1 -27 10)">
-				</image>
-			</g>
-		</mask>
-		<g mask="url(#SVGID_1_)">
-			<linearGradient id="SVGID_2_" gradientUnits="userSpaceOnUse" x1="-0.0719" y1="7.8262" x2="0.0085" y2="-6.9422">
-				<stop  offset="0" style="stop-color:#F0EAED"/>
-				<stop  offset="0.4642" style="stop-color:#EEE8EB"/>
-				<stop  offset="0.6728" style="stop-color:#E7E2E5"/>
-				<stop  offset="0.8301" style="stop-color:#DAD8D9"/>
-				<stop  offset="0.961" style="stop-color:#C8C9C9"/>
-				<stop  offset="1" style="stop-color:#C1C3C3"/>
-			</linearGradient>
-			<path fill="url(#SVGID_2_)" d="M-16.274-2.727c0,0-0.443,3.1,2.436,3.1s2.879-1.992,2.879-1.992s-1.328,7.748,5.979,9.299
-				S5.204,1.48,5.204,1.48s5.977,3.1,13.285-4.429c0,0,4.428,1.108,6.421-1.771c0,0-1.329-1.551-4.207-1.551
-				c-2.878,0-4.208-1.992-5.979-0.664c-1.771,1.328-7.528,1.328-7.528,1.328s-3.322-2.214-4.65-1.328h-8.856
-				c0,0-2.879-1.992-3.985,0c0,0-3.101-1.328-3.765,0c0,0-10.407-1.107-10.85,0.886c0,0,0.442,2.878,1.993,1.993
-				c0,0,0.886,2.656,2.656,2.436C-18.489-1.841-16.274-2.727-16.274-2.727z"/>
-		</g>
-	</g>
-</symbol>
-<use xlink:href="#Cloud_3"  width="49.82" height="15.704" x="-24.91" y="-7.819" transform="matrix(-4.0144 0 0 -3.8207 99.8595 30)" overflow="visible"/>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 200 60" enable-background="new 0 0 200 60" width="150" height="50"><symbol id="d" viewBox="-24.91 -7.819 49.82 15.704"><defs><filter id="a" filterUnits="userSpaceOnUse" x="-24.91" y="-7.885" width="49.82" height="15.704"><feFlood result="back" flood-color="#fff" flood-opacity="1"/><feBlend in="SourceGraphic" in2="back"/></filter></defs><mask maskUnits="userSpaceOnUse" x="-24.91" y="-7.885" width="49.82" height="15.704" id="b"><image overflow="visible" width="54" height="20" xlink:href="data:image/jpeg;base64,/9j/4AAQSkZJRgABAgEASABIAAD/7AARRHVja3kAAQAEAAAAHgAA/+4AIUFkb2JlAGTAAAAAAQMAEAMCAwYAAAGxAAAB+wAAAqr/2wCEABALCwsMCxAMDBAXDw0PFxsUEBAUGx8XFxcXFx8eFxoaGhoXHh4jJSclIx4vLzMzLy9AQEBAQEBAQEBAQEBAQEABEQ8PERMRFRISFRQRFBEUGhQWFhQaJhoaHBoaJjAjHh4eHiMwKy4nJycuKzU1MDA1NUBAP0BAQEBAQEBAQEBAQP/CABEIABQANgMBIgACEQEDEQH/xACPAAEAAgIDAAAAAAAAAAAAAAAABAUGBwECAwEBAAAAAAAAAAAAAAAAAAAAABAAAAUCBQUAAAAAAAAAAAAAAgMEBQYBFhAwERITIxQkFQcRAAECAwUGAwkAAAAAAAAAAAERAgAhEzESAwQUEEFhcYGRMkIFobFSgqJDwyQVEgEAAAAAAAAAAAAAAAAAAAAw/9oADAMBAAIRAxEAAADX65zgrPLYfBobru3ETAE0etoESOEGcFeD/9oACAECAAEFAMj/2gAIAQMAAQUAyP/aAAgBAQABBQDBh+fp1SKQwAKRMIo0IcGCPGPA2aBNiUoNSCAVOTjoaFiNrJoYiEMTYYFa1+70pfOi669pFw7vK7g+4ODrcv8A/9oACAECAgY/AA//2gAIAQMCBj8AD//aAAgBAQEGPwDYzMZ9xv4gUBpIAB5Qcz6c4upglzDNR1gPcxzWO8LiCAeR2lX08MSB3kx++G5rEJJUiSbhDWAtYxoRoUCUEF7SDaFEUH0SfhlAzPp+I3BXxMtaYbky9t55ID90gsH+bURZ3Et6xLUfTA1epRZIv44NHUqhVbyJ80fc1K8aip3hlbUUvLb7Un3jzVV43l98f//Z" transform="matrix(1 0 0 -1 -27 10)" filter="url(#a)"/></mask><g mask="url(#b)"><linearGradient id="c" gradientUnits="userSpaceOnUse" x1="-.072" y1="7.826" x2=".009" y2="-6.942"><stop offset="0" stop-color="#F0EAED"/><stop offset=".464" stop-color="#EEE8EB"/><stop offset=".673" stop-color="#E7E2E5"/><stop offset=".83" stop-color="#DAD8D9"/><stop offset=".961" stop-color="#C8C9C9"/><stop offset="1" stop-color="#C1C3C3"/></linearGradient><path fill="url(#c)" d="M-16.274-2.727s-.443 3.1 2.436 3.1l2.879-1.992s-1.328 7.748 5.979 9.299l10.184-6.2s5.977 3.1 13.285-4.429c0 0 4.428 1.108 6.421-1.771 0 0-1.329-1.551-4.207-1.551s-4.208-1.992-5.979-.664c-1.771 1.328-7.528 1.328-7.528 1.328s-3.322-2.214-4.65-1.328h-8.856s-2.879-1.992-3.985 0c0 0-3.101-1.328-3.765 0 0 0-10.407-1.107-10.85.886 0 0 .442 2.878 1.993 1.993 0 0 .886 2.656 2.656 2.436 1.772-.221 3.987-1.107 3.987-1.107z"/></g></symbol><use xlink:href="#d" width="49.82" height="15.704" x="-24.91" y="-7.819" transform="matrix(-4.014 0 0 -3.821 99.859 30)" overflow="visible"/></svg>

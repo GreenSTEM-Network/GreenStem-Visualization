@@ -5,7 +5,8 @@
 			gravityX: 3,
 			gravityY: 25,
 			scale: 20,
-			host: 'https://solarsunflower.herokuapp.com',
+			imgRoot: '',
+			host: 'http://solarsunflower.herokuapp.com', //'http://localhost:3000',
 			soilGrassImgSrc: 'img/soil-grass.svg',
 			treeWidth: 400,
 			treeHeight: 550,
@@ -13,18 +14,30 @@
 			treeGrassStartPct: 0.715,
 			soilHeight: 145,
 			soilWidth: 290,
-			cloudImgSrc: ['img/cloud1.svg', 'img/cloud2.svg', 'img/cloud3.svg'],
+			cloudImgSrc: ['img/cloud1.svg', 'img/cloud1.svg', 'img/cloud1.svg'],
 			cloudCount: 12,
 			cloudSpeedDivisor: 60,
 			cloudMinX: 0,
 			cloudMinY: 0,
 			cloudMaxYPct: 0.35,
 			sunImgSrc: 'img/sun.svg',
+			rainImgSrc: ['img/rain-light.png', 'img/rain-medium.png', 'img/rain-heavy.png'],
+			rainSpeed: 8,
+			rainWidth: 940, 
+			rainHeight: 1007,
+			rainStatus: 3,
+			forceRain: false, // false - default, 0 = light, 1 = medium, 2 = heavy
 			sunWidth: 300,
 			sunHeight: 125,
 			idealVoltage: 3200,
 			textMargin: 5,
 			textWidth: 400,
+			rainZIndex: 1,
+			groundZIndex: 1,
+			treeZIndex: 100,
+			leafZIndex: 200, 
+			overlayZIndex: 200, 
+			textZIndex: 200,
 			branches: [
 				//Branch 1
 				[{
@@ -465,6 +478,7 @@
 				overlayLayer = new Kinetic.Layer(),
 				leafLayer = new Kinetic.Layer(),
 				textLayer = new Kinetic.Layer(),
+				groundLayer = new Kinetic.Layer(),
 				canvas = layer.getCanvas(),
 				testLeaf = false,
 				branches = settings.branches,
@@ -480,6 +494,7 @@
 				branchOutlines = [],
 				siteData = [],
 				cloudLayers = [],
+				rainLayers = [],
 				jointDef,
 				DEGTORAD;
 
@@ -495,6 +510,9 @@
 			cloudLayers[0] = new Kinetic.Layer();
 			cloudLayers[1] = new Kinetic.Layer();
 
+			rainLayers[0] = new Kinetic.Layer();
+			rainLayers[1] = new Kinetic.Layer();
+			
 			bgLayer.clip({
 				x: 0,
 				y: 0,
@@ -502,7 +520,7 @@
 				height: settings.height
 			});
 
-			settings.treeImg = 'img/tree-' + branches.length + 'branches.svg';
+			settings.treeImg = settings.imgRoot + 'img/tree-' + branches.length + 'branches.svg';
 			settings.cloudSpeed = settings.gravityY / settings.cloudSpeedDivisor;
 
 			Date.prototype.format = function(format) //author: meizz
@@ -680,7 +698,8 @@
 						name: siteName,
 						readings: [ value.soil1, value.soil2, value.soil3 ],
 						temp: value.temp,
-						voltage: value.voltage
+						voltage: value.voltage,
+						createdAt: value.local_created_at
 					};
 
 					branches[dataIndex][0].imgCfg = convertStatusNameToImgCfg(value.average_status_name);
@@ -694,13 +713,32 @@
 					branches[dataIndex][5].imgCfg = convertStatusNameToImgCfg(value.temp ? 'GREEN' : 'RED');
 				});
 
+				// Set Parcipitation Data
+				if (settings.forceRain !== false) {
+					settings.rainStatus = settings.forceRain; 
+					initRain();
+					
+				} else if (data.weather[0].hourly.data[0].precipType == 'rain') {
+					if (data.weather[0].hourly.data[0].precipProbability >= .75) {
+						settings.rainStatus = 2; // hard rain
+					} else if (data.weather[0].hourly.data[0].precipProbability >= .5) {
+						settings.rainStatus = 1; // medium rain
+					} else if (data.weather[0].hourly.data[0].precipProbability >= .25) {
+						settings.rainStatus = 0; // light rain
+					}
+					if (settings.rainStatus != 3) {
+						initRain();
+					}
+				} // can fill in snow data here
+
 				for (var i = 0; i < branches.length; i++) {
 					for (var j = 0; j < branches[i].length; j++) {
 						initLeaf(branches[i][j], i);
 					}
 				}
-
-				settings.gravityY = data.weather[0].currently.windSpeed * 2;
+				if(data.weather && data.weather.length > 1 && data.weather[0].currently && data.weather[0].windSpeed) {
+					settings.gravityY = data.weather[0].currently.windSpeed * 2;
+				}
 				physics.setGravity(settings.gravityX, settings.gravityY );
 				settings.cloudSpeed = settings.gravityY / settings.cloudSpeedDivisor;
 			});
@@ -719,8 +757,8 @@
 						height: settings.treeHeight,
 						image: treeImage
 					}));
-
 					layer.draw();
+					layer.setZIndex(settings.treeZIndex);
 				}
 				treeImage.src = settings.treeImg;
 			};
@@ -759,7 +797,7 @@
 
 						clouds[i] = { img: new Image };
 						initCloud(clouds[i], i, cloudLayers[j]);
-						clouds[i].img.src = settings.cloudImgSrc[cloudSrcIndex];
+						clouds[i].img.src = settings.imgRoot + settings.cloudImgSrc[cloudSrcIndex];
 					}
 				}
 
@@ -780,27 +818,60 @@
 					bgLayer.draw();
 				}
 
-				sunImg.src = settings.sunImgSrc;
+				sunImg.src = settings.imgRoot + settings.sunImgSrc;
 
 				bgLayer.add(skyGradient);
 			};
 
+			var initRain = function() {
+				var rainImage = new Image;
+				rainImage.onload = function() {
+					for (i = 0; i < settings.width; i = (i + settings.rainWidth)) {
+						rainLayers[0].add(new Kinetic.Image({
+		        			x: i,
+			          		y: 0,
+				        	width: settings.rainWidth,
+				        	height: settings.rainHeight,
+				         	image: rainImage,
+				        }));
+					}
+		     
+			        rainLayers[0].setZIndex(settings.rainZIndex);
+			        rainLayers[0].draw();
+
+					for (i = 0; i < settings.width; i = (i + settings.rainWidth)) {
+				        rainLayers[1].add(new Kinetic.Image({
+		        			x: i,
+			          		y: -1 * settings.rainHeight,
+				        	width: settings.rainWidth,
+				        	height: settings.rainHeight,
+				         	image: rainImage,
+				        }));
+				    }
+			        rainLayers[1].setZIndex(settings.rainZIndex);
+			        rainLayers[1].draw();
+			        
+				}
+				rainImage.src = settings.rainImgSrc[settings.rainStatus];
+			}
+			
 			var initGround = function() {
 				var soilGrassImg = new Image;
 				soilGrassImg.onload = function() {
 		        	for(i = 0; i < settings.width; i = (i + settings.soilWidth - 1)) {
-			        	bgLayer.add(new Kinetic.Image({
+			        	groundLayer.add(new Kinetic.Image({
 		        			x: i,
 			          		y: settings.height * settings.treeGrassStartPct,
 				        	width: settings.soilWidth,
 				        	height: settings.soilHeight,
 				         	image: soilGrassImg
 				         }));
+				         groundLayer.setZIndex(settings.groundZIndex);
 			        }
-		        	bgLayer.draw();
+		        	groundLayer.draw();
 		        };
 
-				soilGrassImg.src = settings.soilGrassImgSrc;
+				soilGrassImg.src = settings.imgRoot + settings.soilGrassImgSrc;
 
 		        // bgLayer.add(groundGradient);
 			};
@@ -813,8 +884,7 @@
 						image: new Image
 					}
 
-					branchOutlines[i].image.src = 'img/outline-branch' + (i + 1) + '.svg';
-
+					branchOutlines[i].image.src = settings.imgRoot + 'img/outline-branch' + (i + 1) + '.svg';
 					branchOutlines[i].kineticImage = new Kinetic.Image({
 						x: 0 + settings.treeStartX,
 						y: -13 + settings.treeStartY,
@@ -858,7 +928,8 @@
 				text.sensor[i] = createText((text.site.height() * (i + 1)));
 			}			
 			text.voltage = createText(text.site.height() * 4);
-			text.temp = createText(text.site.height() * 5);
+			text.createdAt = createText(text.site.height() * 5);
+			text.temp = createText(text.site.height() * 6);
 			
 
 			var initLeaf = function(leaf, branchIndex, isTest) {
@@ -866,9 +937,10 @@
 
 				if(!branchEnabled) {
 					leaf.imgCfg = {
-						normalSrc: 'img/leaf-gray-75.svg',
-						outlineSrc: 'img/leaf-gray-75.svg',
-						disabled: true
+						normalSrc: 'img/leaf-gray.svg',
+						outlineSrc: 'img/leaf-gray.svg',
+						disabled: true,
+						opacity: 0.75
 					};
 				}
 				
@@ -924,6 +996,7 @@
 					if(branchEnabled) {
 						leaf.imgCfg.outlineLeafImg.onload = function() {
 							leaf.kineticImage.on('mouseover', function() {
+								leaf.hover = true;
 								setOutlineImageForSite(leaf.branchIndex);
 								branchOutlines[leaf.branchIndex].kineticImage.show();
 								text.site.setText(siteData[branchIndex].name ? siteData[branchIndex].name : '');
@@ -933,6 +1006,9 @@
 								text.voltage.setText(siteData[branchIndex].voltage ?
 									'Voltage: ' + siteData[branchIndex].voltage :
 									'');
+								text.createdAt.setText(siteData[branchIndex].createdAt ? 
+									'Created: ' + siteData[branchIndex].createdAt :
+									'');
 								text.temp.setText(siteData[branchIndex].temp ? 
 									'Temp: ' + siteData[branchIndex].temp :
 									'');
@@ -940,22 +1016,31 @@
 								overlayLayer.draw();
 								textLayer.show();
 								textLayer.draw();
+								
+								leafLayer.setZIndex(settings.leafZIndex);
+								overlayLayer.setZIndex(settings.overlayZIndex);
+								textLayer.setZIndex(settings.textZIndex);
 							});
 
 							leaf.kineticImage.on('mouseout', function() {
-								setNormalImageForSite(leaf.branchIndex);
-								branchOutlines[branchIndex].kineticImage.hide();
-								textLayer.hide();
-								leafLayer.draw();
-								overlayLayer.draw();
+								leaf.hover = false;
+								window.setTimeout(function() {
+									if(!leaf.hover) {
+										setNormalImageForSite(leaf.branchIndex);
+										branchOutlines[branchIndex].kineticImage.hide();
+										textLayer.hide();
+										leafLayer.draw();
+										overlayLayer.draw();
+									}
+								}, 100);
 							});
 						}
 					}
 
-					leaf.imgCfg.outlineLeafImg.src = leaf.imgCfg.outlineSrc;
+					leaf.imgCfg.outlineLeafImg.src = settings.imgRoot + leaf.imgCfg.outlineSrc;
 				}
 
-				leaf.imgCfg.normalImg.src = leaf.imgCfg.normalSrc;
+				leaf.imgCfg.normalImg.src = settings.imgRoot + leaf.imgCfg.normalSrc;
 			};
 
 			initTree();
@@ -966,17 +1051,21 @@
 				textLayer.add(text.sensor[i]);
 			}
 			textLayer.add(text.voltage);
+			textLayer.add(text.createdAt);
 			textLayer.add(text.temp);
 			textLayer.hide();
 
 			stage.add(bgLayer);
+			stage.add(groundLayer);
 			stage.add(cloudLayers[0]);
 			stage.add(cloudLayers[1]);
 			stage.add(layer);
 			stage.add(overlayLayer);
 			stage.add(leafLayer);
 			stage.add(textLayer);
-
+			stage.add(rainLayers[0]);
+			stage.add(rainLayers[1]);
+			
 			if (testLeaf) {
 				testLeaf = {
 					x: parseFloat($('#x').val()),
@@ -1048,7 +1137,18 @@
 
 				cloudLayer.draw();
 			}
-
+			
+			var animateRain = function(rainLayer) {
+				rainLayer.move({x:0, y:settings.rainSpeed});
+				if (rainLayer.position().y > settings.rainHeight) {
+					rainLayer.position({
+						x:0, 
+						y:0
+					});
+				}
+				rainLayer.draw();
+			}
+			
 			$('#controls').find('input').change(function() {
 				initLeaf(testLeaf, true);
 			});
@@ -1090,7 +1190,14 @@
 				}
 
 				leafLayer.draw();
+				leafLayer.setZIndex(settings.leafZIndex);
 
+				if (settings.rainStatus != 3) {
+					for(i = 0; i < 2; i++) {
+						animateRain(rainLayers[i]);
+					}
+				}
+				
 				requestAnimationFrame(gameLoop);
 			};
 

@@ -1,53 +1,1 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- Generator: Adobe Illustrator 17.1.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
-<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-	 viewBox="0 0 220 85" enable-background="new 0 0 220 85" xml:space="preserve">
-<symbol  id="Cloud_2" viewBox="-43.491 -13.836 86.981 27.533">
-	<g>
-		<defs>
-			<filter id="Adobe_OpacityMaskFilter" filterUnits="userSpaceOnUse" x="-43.491" y="-13.697" width="86.981" height="27.533">
-				<feFlood  style="flood-color:white;flood-opacity:1" result="back"/>
-				<feBlend  in="SourceGraphic" in2="back" mode="normal"/>
-			</filter>
-		</defs>
-		<mask maskUnits="userSpaceOnUse" x="-43.491" y="-13.697" width="86.981" height="27.533" id="SVGID_1_">
-			<g filter="url(#Adobe_OpacityMaskFilter)">
-				
-					<image overflow="visible" width="92" height="32" xlink:href="data:image/jpeg;base64,/9j/4AAQSkZJRgABAgEASABIAAD/7AARRHVja3kAAQAEAAAAHgAA/+4AIUFkb2JlAGTAAAAAAQMA
-EAMCAwYAAAHHAAACRAAAA1D/2wCEABALCwsMCxAMDBAXDw0PFxsUEBAUGx8XFxcXFx8eFxoaGhoX
-Hh4jJSclIx4vLzMzLy9AQEBAQEBAQEBAQEBAQEABEQ8PERMRFRISFRQRFBEUGhQWFhQaJhoaHBoa
-JjAjHh4eHiMwKy4nJycuKzU1MDA1NUBAP0BAQEBAQEBAQEBAQP/CABEIACAAXAMBIgACEQEDEQH/
-xACPAAADAAIDAAAAAAAAAAAAAAAABgcDBQECBAEBAAAAAAAAAAAAAAAAAAAAABAAAgEDBAIDAAAA
-AAAAAAAABAUDAgYHACABFxAwERITEQACAQIDBAgEBwAAAAAAAAABAgMAESESBDFRYSIQIEGBkZIT
-NHGh4eKx0TJyIyQFEgEAAAAAAAAAAAAAAAAAAAAw/9oADAMBAAIRAxEAAACfhlO7i2bsUfE9hEdb
-d9MSEb1AADLUEVgKJzK85TSZBTSce0Z07Y68R8TKvH//2gAIAQIAAQUA9n//2gAIAQMAAQUA9n//
-2gAIAQEAAQUA8BAlnzLMbTS0cY4S/B+NBqqGyFkpr3CDSFk23boqYTycAKfBDYtvRUXxbQyrYKPI
-URbVkiK5NzpEE7hd465jiKFnEn1brJWulMyZNzTRkV1TV2Wz12Yz12Yz12aX+K/JQtcZOSldEcWT
-pNMbrHPl+8f7f//aAAgBAgIGPwBP/9oACAEDAgY/AE//2gAIAQEBBj8A6BDpYzI5222D40smvm9M
-mxKJu3Y1iXv+4/nROhmZHANlbEE99EaqMhL2EgxU9ePTRC7ysFHfSqq3nYXdztJ6jQaqMSRsLEGs
-noB+L8x8TUWp0aZI3OVlGzqR6eIXeVgo76XWzMZdRblvsW/DrrDq82VDmXKSMeNqEn+U2Zl/Ujk4
-j500GoQpIhsQegT6qPNMhujWv4Vl0ensdmZ8MN+F6UsqMAOYYi5317dPN9K9unm+2vbp5vtr2q+t
-8eXx+lf34jHJfYl2FvCidPG8j9i2I/G1N6ul7eXKQcON7UzPpAAwwOF6z5P4818nDdX/2Q==" transform="matrix(1 0 0 -1 -46 16)">
-				</image>
-			</g>
-		</mask>
-		<g mask="url(#SVGID_1_)">
-			<linearGradient id="SVGID_2_" gradientUnits="userSpaceOnUse" x1="-0.1378" y1="13.6028" x2="0.0041" y2="-12.4699">
-				<stop  offset="0" style="stop-color:#F0EAED"/>
-				<stop  offset="0.4642" style="stop-color:#EEE8EB"/>
-				<stop  offset="0.6728" style="stop-color:#E7E2E5"/>
-				<stop  offset="0.8301" style="stop-color:#DAD8D9"/>
-				<stop  offset="0.961" style="stop-color:#C8C9C9"/>
-				<stop  offset="1" style="stop-color:#C1C3C3"/>
-			</linearGradient>
-			<path fill="url(#SVGID_2_)" d="M-43.488-11.331c0,0,1.734,2.974,3.716,0.991c0,0-0.247,7.682,6.938,7.434
-				c0,0,3.718,16.604,25.771,16.604c5.452,0,15.859-4.462,16.851-8.674c0,0,6.939,3.717,10.903,0.495
-				c3.965-3.22,1.734-8.673,1.734-8.673s6.691,2.974,8.675-1.734c0,0,4.708-0.247,5.946-4.212c0,0,5.203,1.982,6.442-2.479
-				c0,0-3.222-1.734-6.195,0c0,0-6.443-2.974-8.921,0.496c0,0-12.142-6.194-17.098,0c0,0-6.691-2.231-8.178,0l-19.08-0.248
-				c0,0-6.939-1.734-8.178,0.743c0,0-3.965-0.991-5.204,0C-29.364-10.588-43.736-16.287-43.488-11.331z"/>
-		</g>
-	</g>
-</symbol>
-<use xlink:href="#Cloud_2"  width="86.981" height="27.533" x="-43.491" y="-13.836" transform="matrix(-2.5293 0 0 -3.0872 109.905 42.2859)" overflow="visible"/>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 220 85" enable-background="new 0 0 220 85" width="150" height="50"><symbol id="d" viewBox="-43.491 -13.836 86.981 27.533"><defs><filter id="a" filterUnits="userSpaceOnUse" x="-43.491" y="-13.697" width="86.981" height="27.533"><feFlood result="back" flood-color="#fff" flood-opacity="1"/><feBlend in="SourceGraphic" in2="back"/></filter></defs><mask maskUnits="userSpaceOnUse" x="-43.491" y="-13.697" width="86.981" height="27.533" id="b"><image overflow="visible" width="92" height="32" xlink:href="data:image/jpeg;base64,/9j/4AAQSkZJRgABAgEASABIAAD/7AARRHVja3kAAQAEAAAAHgAA/+4AIUFkb2JlAGTAAAAAAQMAEAMCAwYAAAHHAAACRAAAA1D/2wCEABALCwsMCxAMDBAXDw0PFxsUEBAUGx8XFxcXFx8eFxoaGhoXHh4jJSclIx4vLzMzLy9AQEBAQEBAQEBAQEBAQEABEQ8PERMRFRISFRQRFBEUGhQWFhQaJhoaHBoaJjAjHh4eHiMwKy4nJycuKzU1MDA1NUBAP0BAQEBAQEBAQEBAQP/CABEIACAAXAMBIgACEQEDEQH/xACPAAADAAIDAAAAAAAAAAAAAAAABgcDBQECBAEBAAAAAAAAAAAAAAAAAAAAABAAAgEDBAIDAAAAAAAAAAAABAUDAgYHACABFxAwERITEQACAQIDBAgEBwAAAAAAAAABAgMAESESBDFRYSIQIEGBkZITNHGh4eKx0TJyIyQFEgEAAAAAAAAAAAAAAAAAAAAw/9oADAMBAAIRAxEAAACfhlO7i2bsUfE9hEdbd9MSEb1AADLUEVgKJzK85TSZBTSce0Z07Y68R8TKvH//2gAIAQIAAQUA9n//2gAIAQMAAQUA9n//2gAIAQEAAQUA8BAlnzLMbTS0cY4S/B+NBqqGyFkpr3CDSFk23boqYTycAKfBDYtvRUXxbQyrYKPIURbVkiK5NzpEE7hd465jiKFnEn1brJWulMyZNzTRkV1TV2Wz12Yz12Yz12aX+K/JQtcZOSldEcWTpNMbrHPl+8f7f//aAAgBAgIGPwBP/9oACAEDAgY/AE//2gAIAQEBBj8A6BDpYzI5222D40smvm9MmxKJu3Y1iXv+4/nROhmZHANlbEE99EaqMhL2EgxU9ePTRC7ysFHfSqq3nYXdztJ6jQaqMSRsLEGsnoB+L8x8TUWp0aZI3OVlGzqR6eIXeVgo76XWzMZdRblvsW/DrrDq82VDmXKSMeNqEn+U2Zl/Ujk4j500GoQpIhsQegT6qPNMhujWv4Vl0ensdmZ8MN+F6UsqMAOYYi5317dPN9K9unm+2vbp5vtr2q+t8eXx+lf34jHJfYl2FvCidPG8j9i2I/G1N6ul7eXKQcON7UzPpAAwwOF6z5P4818nDdX/2Q==" transform="matrix(1 0 0 -1 -46 16)" filter="url(#a)"/></mask><g mask="url(#b)"><linearGradient id="c" gradientUnits="userSpaceOnUse" x1="-.138" y1="13.603" x2=".004" y2="-12.47"><stop offset="0" stop-color="#F0EAED"/><stop offset=".464" stop-color="#EEE8EB"/><stop offset=".673" stop-color="#E7E2E5"/><stop offset=".83" stop-color="#DAD8D9"/><stop offset=".961" stop-color="#C8C9C9"/><stop offset="1" stop-color="#C1C3C3"/></linearGradient><path fill="url(#c)" d="M-43.488-11.331s1.734 2.974 3.716.991c0 0-.247 7.682 6.938 7.434 0 0 3.718 16.604 25.771 16.604 5.452 0 15.859-4.462 16.851-8.674 0 0 6.939 3.717 10.903.495 3.965-3.22 1.734-8.673 1.734-8.673s6.691 2.974 8.675-1.734c0 0 4.708-.247 5.946-4.212 0 0 5.203 1.982 6.442-2.479 0 0-3.222-1.734-6.195 0 0 0-6.443-2.974-8.921.496 0 0-12.142-6.194-17.098 0 0 0-6.691-2.231-8.178 0l-19.08-.248s-6.939-1.734-8.178.743c0 0-3.965-.991-5.204 0 .002 0-14.37-5.699-14.122-.743z"/></g></symbol><use xlink:href="#d" width="86.981" height="27.533" x="-43.491" y="-13.836" transform="matrix(-2.529 0 0 -3.087 109.905 42.286)" overflow="visible"/></svg>
